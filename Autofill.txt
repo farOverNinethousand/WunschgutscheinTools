@@ -1,0 +1,28 @@
+### AUTOFILL PROFILES ###,,,,,,
+Profile ID,Name,Site,Hotkey,,,
+c6,Beispielprofil,https://einloesen.wunschgutschein.de/shops/12589/KauflandDE,,,,
+### AUTOFILL RULES ###,,,,,,
+Rule ID,Type,Name,Value,Site,Mode,Profile
+r33,0,"Vorname","Max","",0,c6
+r34,0,"Nachname","Mustermann","",0,c6
+r35,0,"E-Mail-Adresse","beispiel@gmail.com","",0,c6
+r36,3,"^new-shop-customer-validation$","100","",0,c6
+r37,2,"custom-select","""Herr""","",0,c6
+### AUTOFILL OPTIONS ###,,,,,,
+advanced,"[]",,,,,
+exceptions,"[]",,,,,
+textclips,"[]",,,,,
+variables,"[]",,,,,
+backup,0,30,,,,
+manual,0,,,,,
+delay,0,1,,,,
+labelmatch,0,,,,,
+overwrite,0,,,,,
+vars,1,,,,,
+sound,1,,,,,
+voice,0,1,,,,
+debug,0,,,,,
+mask,1,,,,,
+scale,1,,,,,
+menu,1,,,,,
+autoimport,0,,,,,
