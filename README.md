@@ -1,6 +1,6 @@
 # Wunschgutschein.de und Shoppingkonto.de Tools
 
-Wunschgutscheine auf shoppingkonto.de teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern automatisch crawlen
+Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern automatisch crawlen
 
 # Anleitung
 ### Benötigte Browser Addons
