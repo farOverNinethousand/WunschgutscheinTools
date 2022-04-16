@@ -11,9 +11,9 @@ Wunschgutscheine auf shoppingkonto.de teil-automatisiert einlösen und vollstän
 3. Die Datei ``Autofill.txt`` herunterladen.
 Dann wie folgt importieren:  
 Optionen -> Import/Export -> In das große Textfeld den kompletten Inhalt der Datei einfügen -> Import --> Wechseln ins Tab "Form Fields" -> Links unten auf "Save" klicken.
-4. Jetzt das Beispielprofil beliebig oft duplizieren und mit eigenen Daten befüllen.  
-Mit ALT + G gelangst du zur Übersicht der Profile und kannst bestehende duplizieren.
-Wichtig: Bei "Site" den Link zum Shop angeben für den das Profil gelten soll.  
+4. Jetzt in Autofill das Beispielprofil beliebig oft duplizieren und mit eigenen Daten befüllen.  
+Mit ALT + G gelangst du zur Übersicht der Profile und kannst bestehende duplizieren/ändern.
+Wichtig: Unten bei "Site:" den Link zum Shop angeben für den das Profil gelten soll.  
 
 **Was nun passieren sollte:**  
 Du öffnest die Einlöseseite, gibst deinen Gutscheincode ein und bestätigst das Captcha.  
