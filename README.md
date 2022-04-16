@@ -3,7 +3,7 @@
 Wunschgutscheine auf shoppingkonto.de teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern automatisch crawlen
 
 # Anleitung
-## Benötigte Browser Addons
+### Benötigte Browser Addons
 * [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
 * [Autofill](https://chrome.google.com/webstore/detail/autofill/nlmmgnhgdeffjkdckmikfpnddkbbfkkk)
 1. Die benötigten Addons installieren.
