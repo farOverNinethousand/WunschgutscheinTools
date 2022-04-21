@@ -29,12 +29,17 @@ Möchte man nur den bestehenden Datenbestand aktualisieren, kann man einfach die
    Neue Shops werden ggf. ergänzt, bestehende werden nicht aktualisiert und alte nicht gelöscht!
 
 # TODOs
-* Shopliste Crawler aktualisieren
+* Shoplisten-Crawler aktualisieren
+
+# FAQ
+**Ich kann bestimmte Einlösepartner z.B. Kaufland nicht auswählen, woran liegt das und was kann ich tun?**  
+Manchmal sind die Karten mancher Einlösepartner ausverkauft und deswegen temporär nicht verfügbar oder ein Einlösepartner ist plötzlich keiner mehr (schlimmster Fall), aber in den meisten Fällen greifen seltsame Einschränkungen für Gutscheine aus bestimmten Quellen z.B. kann man auf Amazon gekaufte WGs nicht in Kaufland umwandeln (Stand 21.04.2022).  
+Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de](http://shoppingkonto.de/) auflädt und schaut, ob die *fehlenden* Einlösepartner nun verfügbar sind.
 
 # Notizen
 * Mögliche Kartenwerte: 10, 15, 20, 25, 50, 100 (100 ist nur mit Zuzahlung möglich)
 * Manche Shops haben auch komische Wertstufen z.B. Gymondo: 60, 80
-* Manche Shops sind nur in Kategorien auffindbar, aber nicht in der quasi-Kategorie "keine Kategorie"
+* Manche Shops sind nur in Kategorien auffindbar, aber nicht in der *fake-Kategorie* "keine Kategorie"
 
 # WGs Limits
 * Shoppingkonto: Max. 300€ pro 24H, **Limit wird immer um 0 Uhr zurückgesetzt!!**
