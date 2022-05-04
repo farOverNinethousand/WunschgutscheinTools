@@ -42,7 +42,8 @@ Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de]
 * Manche Shops sind nur in Kategorien auffindbar, aber nicht in der *fake-Kategorie* "keine Kategorie"
 
 # WGs Limits
-* Shoppingkonto: Max. 300€ pro 24H, **Limit wird immer um 0 Uhr zurückgesetzt!!**
+* Shoppingkonto: Max. 300€ aufladen pro 24H, **Limit wird immer um 0 Uhr zurückgesetzt!!**
+* Shoppingkonto: Max. 200€ pro 24H auszahlen (Steht in deren AGB unter §6)
 * Shoppingkonto: Max. 24 GS pro Tag und/oder ca. 500€ Aufladung (unbestätigt)
 * Shoppingkonto: Accountsperrung bei zu vielen Einlöse-Fehlversuchen??
-* Shoppingkonto: Sofortige Accountsperre, wenn man versucht, GS mit Fehler "RDXm3" (ganz am Ende) einzulösen
+* Shoppingkonto: Sofortige Accountsperre, wenn man versucht, GS mit Fehler "RDXm3" (ganz am Ende) einzulösen (was man ggf. nicht vorher wissen kann daher im Zweifel die "Anonyme Einlösung" verwenden)
