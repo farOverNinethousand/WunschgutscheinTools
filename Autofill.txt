@@ -1,6 +1,6 @@
 ### AUTOFILL PROFILES ###,,,,,,
 Profile ID,Name,Site,Hotkey,,,
-c6,Beispielprofil,https://einloesen.wunschgutschein.de/shops/12589/KauflandDE,,,,
+c6,Beispielprofil,https://einloesen.wunschgutschein.de/shops/*,,,,
 ### AUTOFILL RULES ###,,,,,,
 Rule ID,Type,Name,Value,Site,Mode,Profile
 r33,0,"Vorname","Max","",0,c6
