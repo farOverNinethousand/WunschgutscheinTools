@@ -10,7 +10,14 @@ Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und v
 2. Die Datei ``Redirector.json`` herunterladen, in den Optionen des Redirector Addons importieren (Optionen -> Import) und beliebig anpassen bzw. so einstellen, dass es automatisch zum bevorzugten Einlösepartner weiterleitet.
 3. Die Datei ``Autofill.txt`` herunterladen.
 Dann wie folgt importieren:  
-Optionen -> Import/Export -> In das große Textfeld den kompletten Inhalt der Datei einfügen -> Import --> Wechseln ins Tab "Form Fields" -> Links unten auf "Save" klicken.
+Optionen -> Import/Export -> In das große Textfeld den kompletten Inhalt der Datei einfügen -> Import --> Wechseln ins Tab "Form Fields" -> Links unten auf "Save" klicken.  
+Optional:  
+Wenn du Profile hast, die nur für bestimmte Einlösepartner angewendet werden sollen, kannst du im jeweiligen Profil unten bei ``site`` die URL zum Shop angeben z.B.  
+``https://einloesen.wunschgutschein.de/shops/10837/amazon``  
+Wenn du nur wenige Profile hast und/oder den Einlösepartner ausschließlich über das Redirector Addon steuern möchtest solltest du dafür sorgen, dass alle Autofill Profile für alle Shops gelten.  
+Schreibe dafür folgenden Wert in das Site Feld:  
+``https://einloesen.wunschgutschein.de/shops/*``  
+(= Standard, wenn du das Beispielprofil aus dieser Repository verwendest.)
 4. Jetzt in Autofill das Beispielprofil beliebig oft duplizieren und mit eigenen Daten befüllen.  
 Mit ALT + G gelangst du zur Übersicht der Profile und kannst bestehende duplizieren/ändern.  
 Wichtig:  
@@ -22,16 +29,24 @@ Du öffnest die Einlöseseite, gibst deinen Gutscheincode ein und bestätigst da
 Danach wirst du automatisch zur Shopseite weitergeleitet , musst nur noch 1x auf "Weiter" klicken, deine Daten werden automatisch eingetragen und mit einem weiteren Klick wird der Gutschein eingelöst.
 Nach erfolgreicher Einlösung wirst du automatisch zur Einlöseseite weitergeleitet und kannst den nächsten Gutscheincode einlösen.
 
-# **VERALTET!** Vollständige Liste aller Einlösepartner crawlen
-1. Einlösesession bei wunschgutschein.de starten:  
-   [Hier](https://www.wunschgutschein.de/einloesen/) einen gültigen Gutschein eingeben und den Wert des "PHPSESSID" Cookies kopieren.
-2. ShopCrawler.py starten und den Wert des Cookies eingeben.
-3. Nach dem Crawlvorgang finden sich die Daten in den Dateien ``shops.csv`` und ``shops.json``.  
-Möchte man nur den bestehenden Datenbestand aktualisieren, kann man einfach die letzte ``shops.json`` im Ordner liegen lassen und das Script erneut durchlaufen lassen.  
-   Neue Shops werden ggf. ergänzt, bestehende werden nicht aktualisiert und alte nicht gelöscht!
+# ShopCrawler - Vollständige Liste aller Einlösepartner crawlen  
+Mit dem ShopCrawler kannst du eine aktuelle Liste aller WG Einlösepartner, einlösbare Wertstufen usw. erstellen lassen.  
+Dieser Vorgang kann bis zu 45 Minuten dauern.
+1. ShopCrawler.py starten.
+2. Nach dem Crawlvorgang finden sich die Daten in den Dateien ``shops.csv`` und ``shops.json``.  
+3. Optional:  
+Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, kann man einfach die zuletzt erstellte ``shops.json`` im Ordner liegen lassen und das Script mit dem Parameter ``allow_update_shops`` erneut durchlaufen lassen.  
+Mehr zu diesem Parameter siehe Liste der Parameter unten.
+
+### Mögliche Parameter
+| Parameter        | Erklärung    
+| :-------------: |:-------------:|
+| skip_vpn_warning      | VPN Warnung am Anfang des Scripts überspringen z.B. nützlich, wenn das Script alle X Zeit automatisch aufgerufen wird.
+| allow_update_shops      | Alte shops.json wiederverwenden und nur **neue Shops** crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!
+| csv_skip_inactive_shops      | Als 'inaktiv' markierte Shops nicht mit in die Liste aufnehmen. Was 'inaktiv' bedeutet ist noch unklar daher sollte man diesen Parameter nicht verwenden.
 
 # TODOs
-* Shoplisten-Crawler verbessern
+* Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)
 * VoucherHelper aktualisieren (copy URL Kram wird nicht mehr benötigt)
 
 # Relevante WG API Calls
@@ -53,6 +68,7 @@ https://einloesen.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&
 | Fehlercode        | Text           | Bedeutung  |
 | :-------------: |:-------------:| -----:|
 | VCRx8      | Ihr Gutscheincode wurde vom Schenker noch nicht aktiviert. Mit dieser Aktivierung möchten wir sichergehen, dass der Gutschein nicht unerlaubt durch Dritte entwendet wird. Wir haben in diesem Moment an den Schenker eine E-Mail versendet, die ihn an die Aktivierung erinnert. | Selbsterklärend |
+| RDMx3     | Es ist ein Fehler aufgetreten (RDMx3)      |   Der GS wurde nach dem Kauf noch nicht aktiviert (Sicherheitssperre 24h oder so). Abwarten und am nächsten Werktag erneut probieren. |
 | DUMMY     | DUMMY      |   DUMMY |
 
 # Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung)

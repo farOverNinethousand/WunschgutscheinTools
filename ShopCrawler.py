@@ -1,21 +1,23 @@
 import csv
 import logging
 import os
-import re
 import sys
-import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
-from typing import Union, List, Any
+from typing import Any
 
 import simplejson as json
 from json import loads
-import html
 
 API_BASE = "https://einloesen.wunschgutschein.de/api"
 basicHeaders = {"X-Requested-With": "XMLHttpRequest",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"}
+PATH_SHOPS_JSON = "shops.json"
+PATH_SHOPS_RAW_JSON = "shops_raw.json"
+# These ones are the interesting/most common possible card values
+relevantRedeemableCardValues = [10, 15, 20, 25, 50, 100]
+debugmode = True
 
 
 def doPostRequest(targetURL: str, postData: dict, thisheaders: dict) -> str:
@@ -55,6 +57,7 @@ def getFormattedPassedTime(pastTimestamp: float) -> str:
     # return duration.strftime("%Hh:%Mm")
     return str(timedelta(seconds=secondsPassed))
 
+
 def isCardValuePossible(shop: dict, cardValueEUR: int) -> bool:
     voucherValues = shop.get('voucherValues', [])
     for possibleCardValue in relevantRedeemableCardValues:
@@ -65,6 +68,7 @@ def isCardValuePossible(shop: dict, cardValueEUR: int) -> bool:
                 return True
     return False
 
+
 def isRelevantCardValue(cardValueCent: int) -> bool:
     if (cardValueCent / 100) in relevantRedeemableCardValues:
         return True
@@ -72,13 +76,15 @@ def isRelevantCardValue(cardValueCent: int) -> bool:
         return False
 
 
+def saveJson(obj, path):
+    with open(path, 'w') as ofile:
+        json.dump(obj, ofile)
+
+
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-    # These ones are the interesting possible card values for us
-    relevantRedeemableCardValues = [10, 15, 20, 25, 50, 100]
-    debugmode = True
 
     if debugmode:
         print("DEBUGMODE!!!")
@@ -90,23 +96,26 @@ if __name__ == '__main__':
         print("Let's go!")
     timestampStart = datetime.now().timestamp()
     # Crawl all categories and make a mapping
-    print("Crawle shops...")
     categoriesList = callAPI('/shop/categories/1')
     # TODO: Find out why category 31 is missing in the API response we get
     categoriesList.append({'id': 31, 'name': 'Restaurant', 'slug': 'Lokalhelden'})
     categoriesMapping = {}
     for category in categoriesList:
         categoriesMapping.setdefault(category['id'], category)
-    # Save shop information as json file
-    with open('categories.json', 'w') as outfile:
-        json.dump(categoriesMapping, outfile)
-    # Get list of all shops
-    crawledShopsRaw = callAPI('/shop/wall/1?onlyWithLogo=1')
+    # Save categories mapping as json file
+    saveJson(categoriesMapping, 'categories.json')
+    # Get list of basic shop information
+    crawledShopsRawOriginal = callAPI('/shop/wall/1?onlyWithLogo=1')
+    crawledShopsRaw = crawledShopsRawOriginal.copy()
+    # Save as json for later offline examination
+    saveJson(crawledShopsRaw, PATH_SHOPS_RAW_JSON)
+
     shopIDsToUpdate = []
-    if os.path.exists("shops.json") and 'allow_update_shops' in sys.argv:
+    storedShops = []
+    if os.path.exists(PATH_SHOPS_JSON) and 'allow_update_shops' in sys.argv:
         # Load last state so we can crawl faster
-        print("Fahre fort mit vorheriger shops.json - das sollte den Crawlvorgang erheblich beschleunigen!")
-        with open(os.path.join(os.getcwd(), "shops.json"), encoding='utf-8') as infile:
+        print("Vorherige " + PATH_SHOPS_JSON + " gefunden. Es werden nur neue Shops gecrawlt!!")
+        with open(os.path.join(os.getcwd(), PATH_SHOPS_JSON), encoding='utf-8') as infile:
             storedShops = json.load(infile)
         newShops = []
         for currentShop in crawledShopsRaw:
@@ -117,10 +126,10 @@ if __name__ == '__main__':
                     foundShop = True
                     break
             if not foundShop:
-                print("!!Found new shop: " + currentShop['name'] + " | ID: " + str(currentShopID))
+                print("SHOP_NEW: " + currentShop['name'] + " | ID: " + str(currentShopID))
                 shopIDsToUpdate.append(currentShopID)
                 newShops.append(currentShop)
-        logging.info("Anzahl neuer Shops: " + str(len(newShops)))
+        print("Number of new shops: " + str(len(newShops)))
         # Continue with old dataset now that we know which shops need re-crawl
         crawledShopsRaw = storedShops
         crawledShopsRaw += newShops
@@ -143,15 +152,14 @@ if __name__ == '__main__':
                 otherCardValues.append(valueInCent / 100)
         shop['voucherValuesMisc'] = otherCardValues
 
-
     # Collect detailed info for all shops - will may take some time
-    print("Crawle Shop-Details...")
+    print('Crawling details of shops: ' + str(len(shopIDsToUpdate)))
     progress = 1
     shops = []
     for shop in crawledShopsRaw:
         shopID = shop['id']
         if shopID in shopIDsToUpdate:
-            print("Crawle Shop-Details " + str(progress) + " / " + str(len(shopIDsToUpdate)))
+            print("Working on shop " + str(progress) + " / " + str(len(shopIDsToUpdate)))
             extendedShopInfo = callAPI('/shop/' + str(shopID))
             # Merge both dicts so we got all shop information in one dict
             shops.append({**shop, **extendedShopInfo})
@@ -159,7 +167,7 @@ if __name__ == '__main__':
             if progress >= 4 and debugmode:
                 break
         else:
-            # Append dataset without updating it
+            # Append old dataset without updating it
             shops.append(shop)
 
     # Check for possible new fields
@@ -171,8 +179,18 @@ if __name__ == '__main__':
                 print("Found new redeemable field: " + redeemableStatus)
 
     # Save shop information as json file
-    with open('shops.json', 'w') as outfile:
-        json.dump(shops, outfile)
+    saveJson(shops, PATH_SHOPS_JSON)
+
+    # Look for deleted shops (only possible if we got data from previous crawl process)
+    for oldShop in storedShops:
+        foundShop = False
+        oldShopID = oldShop['id']
+        for shop in crawledShopsRawOriginal:
+            if shop['id'] == oldShopID:
+                foundShop = True
+                break
+        if not foundShop:
+            print('SHOP_DELETED: ' + str(oldShopID) + ' | ' + oldShop['name'] + ' | ' + oldShop['link'])
 
     # Create csv file with most relevant human readable results
     ignoreInactiveShopsInCSV = 'csv_skip_inactive_shops' in sys.argv
@@ -213,7 +231,8 @@ if __name__ == '__main__':
              UnicodeEncodeError: 'charmap' codec can't encode character '\u0308' in position 109: character maps to <undefined>
              """
             writer.writerow(columns)
-    print("Number of skipped inactive shops: " + str(len(skippedInactiveShops)))
+    if ignoreInactiveShopsInCSV:
+        print("Number of skipped inactive shops: " + str(len(skippedInactiveShops)))
     if len(skippedInactiveShops) > 0:
         print("Skipped inactive shops:")
         print(str(skippedInactiveShops))
