@@ -88,36 +88,65 @@ def getSortedVoucherListWithResults(initialVoucherList: list, voucherListWithRes
     thisAmountText += "\n" + str(totalAmount)
     return result, thisAmountText
 
+def getVoucherListWithResults(vouchersWithResults: list) -> Tuple[list, str]:
+    """ Combines the initially added list with the list containing the results in order to return that list in original order. """
+    result = []
+    totalAmount = 0
+    for voucherWithResult in vouchersWithResults:
+        moneyRegex = re.compile(PATTERN_VOUCHER + r'[ \t]+(\d+(,\d{1,2})?)').search(voucherWithResult)
+        if moneyRegex:
+            amount = moneyRegex.group(1).replace(",", ".")
+            totalAmount += float(amount)
+        result.append(voucherWithResult)
+    thisAmountText = "---"
+    thisAmountText += "\n" + str(totalAmount)
+    return result, thisAmountText
+
 
 if __name__ == '__main__':
     print("Gib alle WGs zeilengetrennt ein:")
-    voucherCodes = getVoucherCodes()
-    allVouchersAsURLsText = ""
-    for voucher in voucherCodes:
-        allVouchersAsURLsText += "\nhttps://www.meinshoppingkonto.de/transaction/employeevoucherdeposit/?vouchercode=" + voucher
-    print(allVouchersAsURLsText)
-    pyclip.copy(allVouchersAsURLsText)
-    print(str(len(voucherCodes)) + " GS gefunden und alle Links in die Zwischenablage kopiert!")
-
-    while True:
-        print("Gib dieselbe Liste von Codes mit Ergebnis am Ende ein z.B.: 'aaa-b5f-cgh Fehler: bla' oder 'aaa-b5f-cgh 25,00':")
+    useOldURLHandling = False
+    if useOldURLHandling:
+        voucherCodes = getVoucherCodes()
+        allVouchersAsURLsText = ""
+        for voucher in voucherCodes:
+            allVouchersAsURLsText += "\nhttps://www.meinshoppingkonto.de/transaction/employeevoucherdeposit/?vouchercode=" + voucher
+        print(allVouchersAsURLsText)
+        pyclip.copy(allVouchersAsURLsText)
+        print(str(len(voucherCodes)) + " GS gefunden und alle Links in die Zwischenablage kopiert!")
+        while True:
+            print("Gib dieselbe Liste von Codes mit Ergebnis am Ende ein z.B.: 'aaa-b5f-cgh Fehler: bla' oder 'aaa-b5f-cgh 25,00':")
+            voucherCodesWithResults = getVoucherCodesWithResults()
+            voucherCodesWithResultsSorted, amountText = getSortedVoucherListWithResults(voucherCodes, voucherCodesWithResults)
+            sortedVouchersWithResultsAsText = ""
+            for voucherCodeWithResult in voucherCodesWithResultsSorted:
+                sortedVouchersWithResultsAsText += "\n" + voucherCodeWithResult
+            sortedVouchersWithResultsAsText += "\n" + amountText
+            print("********************************************************************************")
+            print(sortedVouchersWithResultsAsText)
+            pyclip.copy(sortedVouchersWithResultsAsText)
+            print("********************************************************************************")
+            if len(voucherCodesWithResultsSorted) == len(voucherCodes):
+                print("Es wurden alle " + str(len(voucherCodes)) + " Codes gefunden/sortiert :)")
+                print("Das sortierte Ergebnis wurde in die Zwischenablage kopiert!")
+                break
+            else:
+                print("ACHTUNG: Es wurden nur " + str(len(voucherCodesWithResultsSorted)) + " von " + str(len(voucherCodes)) + " anfangs eingefügten Codes zugeordnet/sortiert werden!")
+                print("Das sortierte Ergebnis wurde in die Zwischenablage kopiert!")
+                input("Drücke ENTER um nochmals Codes mit Ergebnis zum Sortieren einzugeben oder beende das Script.")
+    else:
+        print("Gib die Liste von Codes mit Ergebnis am Ende ein z.B.: 'aaa-b5f-cgh Fehler: bla' oder 'aaa-b5f-cgh 25,00':")
         voucherCodesWithResults = getVoucherCodesWithResults()
-        voucherCodesWithResultsSorted, amountText = getSortedVoucherListWithResults(voucherCodes, voucherCodesWithResults)
-        sortedVouchersWithResultsAsText = ""
-        for voucherCodeWithResult in voucherCodesWithResultsSorted:
-            sortedVouchersWithResultsAsText += "\n" + voucherCodeWithResult
-        sortedVouchersWithResultsAsText += "\n" + amountText
+        voucherCodesWithResultsNotSorted, amountText = getVoucherListWithResults(voucherCodesWithResults)
+        text = ""
+        for voucherCodeWithResult in voucherCodesWithResultsNotSorted:
+            text += "\n" + voucherCodeWithResult
+        text += "\n" + amountText
         print("********************************************************************************")
-        print(sortedVouchersWithResultsAsText)
-        pyclip.copy(sortedVouchersWithResultsAsText)
+        print(text)
+        pyclip.copy(text)
         print("********************************************************************************")
-        if len(voucherCodesWithResultsSorted) == len(voucherCodes):
-            print("Es wurden alle " + str(len(voucherCodes)) + " Codes gefunden/sortiert :)")
-            print("Das sortierte Ergebnis wurde in die Zwischenablage kopiert!")
-            break
-        else:
-            print("ACHTUNG: Es wurden nur " + str(len(voucherCodesWithResultsSorted)) + " von " + str(len(voucherCodes)) + " anfangs eingefügten Codes zugeordnet/sortiert werden!")
-            print("Das sortierte Ergebnis wurde in die Zwischenablage kopiert!")
-            input("Drücke ENTER um nochmals Codes mit Ergebnis zum Sortieren einzugeben oder beende das Script.")
+        print("Es wurden alle " + str(len(voucherCodesWithResults)) + " Codes gefunden :)")
+        print("Das Ergebnis wurde in die Zwischenablage kopiert!")
 
     input("Drücke ENTER zum Beenden")

@@ -47,7 +47,7 @@ Mehr zu diesem Parameter siehe Liste der Parameter unten.
 
 # TODOs
 * Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)
-* VoucherHelper aktualisieren (copy URL Kram wird nicht mehr benötigt)
+* VoucherHelper aktualisieren (Gutscheincodeformat ohne Bindestrich unterstützen und Erfassung verbessern)
 
 # Relevante WG API Calls
 ```
