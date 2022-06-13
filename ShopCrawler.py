@@ -114,7 +114,7 @@ if __name__ == '__main__':
     storedShops = []
     if os.path.exists(PATH_SHOPS_JSON) and 'allow_update_shops' in sys.argv:
         # Load last state so we can crawl faster
-        print("Vorherige " + PATH_SHOPS_JSON + " gefunden. Es werden nur neue Shops gecrawlt!!")
+        print("Vorherige " + PATH_SHOPS_JSON + " gefunden. Es werden nur neue Shops gecrawlt, Informationen bestehender werden nicht aktualisiert!!")
         with open(os.path.join(os.getcwd(), PATH_SHOPS_JSON), encoding='utf-8') as infile:
             storedShops = json.load(infile)
         newShops = []
