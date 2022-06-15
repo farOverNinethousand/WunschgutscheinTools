@@ -62,6 +62,11 @@ https://einloesen.wunschgutschein.de/api/redeem/maintenance-status
 https://einloesen.wunschgutschein.de/api/shop/wall/1?onlyWithLogo=1
 https://einloesen.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&voucherValue=2500&currency=EUR
 
+https://einloesen.wunschgutschein.de/api/redeem/link/<redeemLinkToken>
+
+https://einloesen.wunschgutschein.de/api/redeem/merchantcode
+POST {"redeemLinkToken":"<redeemLinkToken>"}
+
 ```
 
 # Bekannte Fehlercodes und deren Bedeutung (direkt nach Gutscheineingabe)

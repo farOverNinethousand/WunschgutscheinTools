@@ -85,10 +85,12 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-
+    canReUseExistingDatabase = os.path.exists(PATH_SHOPS_JSON) and 'allow_update_shops' in sys.argv
     if debugmode:
         print("DEBUGMODE!!!")
     if 'skip_vpn_warning' not in sys.argv:
+        if canReUseExistingDatabase:
+            print("Existierende " + PATH_SHOPS_JSON + " wird verwendet!")
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
         print("Falls du nach dem Crawlvorgang mit derselben IP zeitnah Gutscheine einlöst, könnte es zu Sperrungen kommen!")
         print("ENTER = Fortfahren")
@@ -112,7 +114,7 @@ if __name__ == '__main__':
 
     shopIDsToUpdate = []
     storedShops = []
-    if os.path.exists(PATH_SHOPS_JSON) and 'allow_update_shops' in sys.argv:
+    if canReUseExistingDatabase:
         # Load last state so we can crawl faster
         print("Vorherige " + PATH_SHOPS_JSON + " gefunden. Es werden nur neue Shops gecrawlt, Informationen bestehender werden nicht aktualisiert!!")
         with open(os.path.join(os.getcwd(), PATH_SHOPS_JSON), encoding='utf-8') as infile:
