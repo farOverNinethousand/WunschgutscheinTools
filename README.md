@@ -74,6 +74,8 @@ POST {"redeemLinkToken":"<redeemLinkToken>"}
 | :-------------: |:-------------:| -----:|
 | VCRx8      | Ihr Gutscheincode wurde vom Schenker noch nicht aktiviert. Mit dieser Aktivierung möchten wir sichergehen, dass der Gutschein nicht unerlaubt durch Dritte entwendet wird. Wir haben in diesem Moment an den Schenker eine E-Mail versendet, die ihn an die Aktivierung erinnert. | Selbsterklärend |
 | RDMx3     | Es ist ein Fehler aufgetreten (RDMx3)      |   Der GS wurde nach dem Kauf noch nicht aktiviert (Sicherheitssperre 24h oder so). Abwarten und am nächsten Werktag erneut probieren. |
+| STDx11     | wgs.std.err.occurred (STDx11) |   Unbekannt |
+| VCRx15     |  Es ist ein Fehler aufgetreten. Bitte wenden Sie sich an unseren Kundenservice. (VCRx15)      |   Der Code ist noch nicht aktiv (Sicherheitssperre nach Kauf) -> Am nächsten Tag erneut versuchen |
 | DUMMY     | DUMMY      |   DUMMY |
 
 # Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung)
