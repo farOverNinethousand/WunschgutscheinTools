@@ -1,9 +1,10 @@
 import re
+import sys
 from typing import Tuple
 
 import pyclip
 
-PATTERN_VOUCHER = "[A-Za-z0-9]{3}-[A-Za-z0-9]{3}-[A-Za-z0-9]{3}"
+PATTERN_VOUCHER = "(?:[A-Za-z0-9]{3}-[A-Za-z0-9]{3}-[A-Za-z0-9]{3}|[A-Za-z0-9]{9})"
 
 
 class Voucher:
@@ -52,6 +53,7 @@ class Voucher:
         """ Parses vouchers from within given text. """
         ret = []
         results = re.compile("(" + PATTERN_VOUCHER + "[ \t]+.+)").findall(text)
+        dupes = []
         for result in results:
             result = result.strip()
             voucherInfoRegEx = re.compile(r'(' + PATTERN_VOUCHER + r')' + r'([ \t]+(.+)?)?').search(result)
@@ -66,12 +68,19 @@ class Voucher:
                         voucher.setValue(int(moneyValueOrErrormessage) * 100)
                 else:
                     voucher.setErrorMsg(moneyValueOrErrormessage)
-            ret.append(voucher)
+            # Skip dupes if needed
+            voucherCodeCleaned = voucher.getCodeCleaned()
+            if filterDuplicates and voucherCodeCleaned in dupes:
+                continue
+            else:
+                ret.append(voucher)
+                dupes.append(voucherCodeCleaned)
         return ret
 
 
 def getVoucherCodes() -> list:
     results = []
+    counter_lines_of_input = 0
     while len(results) == 0:
         # Multi line input: https://stackoverflow.com/questions/30239092/how-to-get-multiline-input-from-user
         voucherSource = ''
@@ -105,6 +114,9 @@ def getVoucherCodes() -> list:
         for dupe in dupes:
             print(dupe)
         input("Bestätige mit ENTER, um ohne Duplikate mit " + str(len(resultWithoutDuplicates)) + "/" + str(len(results)) + " Codes fortzufahren")
+    if counter_lines_of_input != len(resultWithoutDuplicates):
+        print("Warnung! " + str(counter_lines_of_input) + " Zeilen aber nur " + str(len(resultWithoutDuplicates)) + " Codes!!")
+        input("Fortfahren?")
     return resultWithoutDuplicates
 
 
@@ -190,7 +202,9 @@ class VoucherHelper:
             print(text)
             pyclip.copy(text)
             print("********************************************************************************")
-            print("Es wurden alle " + str(len(voucherCodes)) + " Codes gefunden :)")
+            print("Es wurden " + str(len(voucherCodes)) + " Codes gefunden :)")
             print("Das Ergebnis wurde in die Zwischenablage kopiert!")
 
-        input("Drücke ENTER zum Beenden")
+        # input("Drücke ENTER zum Beenden")
+        print("Ende")
+        sys.exit()
