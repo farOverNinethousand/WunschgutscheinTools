@@ -17,7 +17,7 @@ PATH_SHOPS_JSON = "shops.json"
 PATH_SHOPS_RAW_JSON = "shops_raw.json"
 # These ones are the interesting/most common possible card values
 relevantRedeemableCardValues = [10, 15, 20, 25, 50, 100]
-debugmode = True
+debugmode = False
 
 
 def doPostRequest(targetURL: str, postData: dict, thisheaders: dict) -> str:
@@ -92,9 +92,14 @@ if __name__ == '__main__':
         if canReUseExistingDatabase:
             print("Existierende " + PATH_SHOPS_JSON + " wird verwendet!")
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
+        try:
+            request = urllib.request.Request("https://api.ipify.org/?format=json")
+            response = loads(urllib.request.urlopen(request).read().decode())
+            print("Derzeitige IP: " + response["ip"])
+        except:
+            print("Failed to get IP via api.ipify.org")
         print("Falls du nach dem Crawlvorgang mit derselben IP zeitnah Gutscheine einlöst, könnte es zu Sperrungen kommen!")
-        print("ENTER = Fortfahren")
-        input()
+        input("ENTER = Fortfahren")
         print("Let's go!")
     timestampStart = datetime.now().timestamp()
     # Crawl all categories and make a mapping
@@ -167,6 +172,7 @@ if __name__ == '__main__':
             shops.append({**shop, **extendedShopInfo})
             progress += 1
             if progress >= 4 and debugmode:
+                print("Stopping because: debugmode is enabled")
                 break
         else:
             # Append old dataset without updating it
