@@ -44,6 +44,7 @@ Mehr zu diesem Parameter siehe Liste der Parameter unten.
 | skip_vpn_warning      | VPN Warnung am Anfang des Scripts überspringen z.B. nützlich, wenn das Script alle X Zeit automatisch aufgerufen wird.
 | allow_update_shops      | Alte shops.json wiederverwenden und nur **neue Shops** crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!
 | csv_skip_inactive_shops      | Als 'inaktiv' markierte Shops nicht mit in die Liste aufnehmen. Was 'inaktiv' bedeutet ist noch unklar daher sollte man diesen Parameter nicht verwenden.
+| skip_vpn_warning_ip_check      | Abfrage und Anzeige der IP Adresse in der VPN Warnung deaktivieren.
 
 # TODOs
 * Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)

@@ -58,14 +58,13 @@ def getFormattedPassedTime(pastTimestamp: float) -> str:
     return str(timedelta(seconds=secondsPassed))
 
 
-def isCardValuePossible(shop: dict, cardValueEUR: int) -> bool:
-    voucherValues = shop.get('voucherValues', [])
-    for possibleCardValue in relevantRedeemableCardValues:
-        cardValuePossible = False
-        for voucherValue in voucherValues:
-            valueInCent = voucherValue['valueInCent']
-            if valueInCent == possibleCardValue * 100:
-                return True
+def isCardValuePossible(thisShop: dict, checkValueEuros: int) -> bool:
+    """ Checks if given shop supports redeeming vouchers for given card value in EUR. """
+    thisVoucherValues = thisShop.get('voucherValues', [])
+    for thisVoucherValue in thisVoucherValues:
+        thisValueInCent = thisVoucherValue['valueInCent']
+        if thisValueInCent == checkValueEuros * 100:
+            return True
     return False
 
 
@@ -92,12 +91,13 @@ if __name__ == '__main__':
         if canReUseExistingDatabase:
             print("Existierende " + PATH_SHOPS_JSON + " wird verwendet!")
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
-        try:
-            request = urllib.request.Request("https://api.ipify.org/?format=json")
-            response = loads(urllib.request.urlopen(request).read().decode())
-            print("Derzeitige IP: " + response["ip"])
-        except:
-            print("Failed to get IP via api.ipify.org")
+        if 'skip_vpn_warning_ip_check' not in sys.argv:
+            try:
+                request = urllib.request.Request("https://api.ipify.org/?format=json")
+                response = loads(urllib.request.urlopen(request).read().decode())
+                print("Derzeitige IP: " + response["ip"])
+            except:
+                print("Failed to get IP via api.ipify.org")
         print("Falls du nach dem Crawlvorgang mit derselben IP zeitnah Gutscheine einlöst, könnte es zu Sperrungen kommen!")
         input("ENTER = Fortfahren")
         print("Let's go!")
@@ -118,6 +118,7 @@ if __name__ == '__main__':
     saveJson(crawledShopsRaw, PATH_SHOPS_RAW_JSON)
 
     shopIDsToUpdate = []
+    shopIDsNew = []
     storedShops = []
     if canReUseExistingDatabase:
         # Load last state so we can crawl faster
@@ -133,9 +134,11 @@ if __name__ == '__main__':
                     foundShop = True
                     break
             if not foundShop:
-                print("SHOP_NEW: " + currentShop['name'] + " | ID: " + str(currentShopID))
+                # 2022-06-23: Moved output to other place after crawling so that we got all shop info e.g. also shop URL
+                # print("SHOP_NEW: " + currentShop['name'] + " | ID: " + str(currentShopID))
                 shopIDsToUpdate.append(currentShopID)
                 newShops.append(currentShop)
+                shopIDsNew.append(currentShopID)
         print("Number of new shops: " + str(len(newShops)))
         # Continue with old dataset now that we know which shops need re-crawl
         crawledShopsRaw = storedShops
@@ -189,7 +192,7 @@ if __name__ == '__main__':
     # Save shop information as json file
     saveJson(shops, PATH_SHOPS_JSON)
 
-    # Look for deleted shops (only possible if we got data from previous crawl process)
+    # Look for deleted shops and print info - Only possible if we got data from previous crawl process
     for oldShop in storedShops:
         foundShop = False
         oldShopID = oldShop['id']
@@ -199,6 +202,13 @@ if __name__ == '__main__':
                 break
         if not foundShop:
             print('SHOP_DELETED: ' + str(oldShopID) + ' | ' + oldShop['name'] + ' | ' + oldShop['link'])
+    # Print info about new shops
+    if len(shopIDsNew) > 0:
+        for newShopID in shopIDsNew:
+            for shop in shops:
+                shopID = shop['id']
+                if shopID == newShopID:
+                    print('SHOP_NEW: ' + str(newShopID) + ' | ' + shop['name'] + ' | ' + shop['link'])
 
     # Create csv file with most relevant human readable results
     ignoreInactiveShopsInCSV = 'csv_skip_inactive_shops' in sys.argv
