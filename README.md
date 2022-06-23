@@ -86,6 +86,8 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 | STDx23      | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt
 | RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre
 | RDMx12      | wgs.std.err.occurred (RDMx12) | Unbekannt
+| RDMx5      | RDMx5 | Problem beim Einlösepartner
+
 # FAQ
 **Ich kann bestimmte Einlösepartner z.B. Kaufland nicht auswählen, woran liegt das und was kann ich tun?**  
 Manchmal sind die Karten mancher Einlösepartner ausverkauft und deswegen temporär nicht verfügbar oder ein Einlösepartner ist plötzlich keiner mehr (schlimmster Fall), aber in den meisten Fällen greifen seltsame Einschränkungen für Gutscheine aus bestimmten Quellen z.B. kann man auf Amazon gekaufte WGs nicht in Kaufland umwandeln (Stand 21.04.2022).  
