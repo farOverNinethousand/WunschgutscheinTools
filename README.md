@@ -77,6 +77,8 @@ POST {"redeemLinkToken":"<redeemLinkToken>"}
 | RDMx3     | Es ist ein Fehler aufgetreten (RDMx3)      |   Der GS wurde nach dem Kauf noch nicht aktiviert (Sicherheitssperre 24h oder so). Abwarten und am nächsten Werktag erneut probieren. |
 | STDx11     | wgs.std.err.occurred (STDx11) |   Unbekannt |
 | VCRx15     |  Es ist ein Fehler aufgetreten. Bitte wenden Sie sich an unseren Kundenservice. (VCRx15)      |   Der Code ist noch nicht aktiv (Sicherheitssperre nach Kauf) -> Am nächsten Tag erneut versuchen |
+| VCRx10     | Text zu lang      |   GS wegen Verlust ersetzt oder wg. Diebstahlschutz gesperrt. |
+| VCRx1     | Bitte achten Sie auf Groß- u. Kleinschreibung...      |   GS ungültig |
 | DUMMY     | DUMMY      |   DUMMY |
 
 # Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung)
