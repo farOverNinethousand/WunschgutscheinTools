@@ -1,7 +1,7 @@
+import argparse
 import csv
 import logging
 import os
-import sys
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
@@ -81,17 +81,25 @@ def saveJson(obj, path):
 
 
 if __name__ == '__main__':
+
+    my_parser = argparse.ArgumentParser()
+    my_parser.add_argument('-s', '--skip_vpn_warning', help='VPN Warnung mit Warten auf Benutzereingabe überspringen? Z.B. nützlich, wenn das Script alle X Zeit automatisch aufgerufen wird.', type=bool, default=False)
+    my_parser.add_argument('-s2', '--skip_vpn_warning_ip_check', help='Abfrage und Anzeige der IP Adresse in der VPN Warnung überspringen/deaktivieren.', type=bool, default=False)
+    my_parser.add_argument('-a', '--allow_update_shops', help='Alte shops.json wiederverwenden und nur **neue Shops** crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!', type=bool, default=False)
+    my_parser.add_argument('-c', '--csv_skip_inactive_shops', help='Als \'inaktiv\' markierte Shops nicht mit in die Liste aufnehmen. Was \'inaktiv\' bedeutet ist noch unklar, daher sollte man diesen Parameter nicht verwenden.', type=bool, default=False)
+    args = my_parser.parse_args()
+
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-    canReUseExistingDatabase = os.path.exists(PATH_SHOPS_JSON) and 'allow_update_shops' in sys.argv
+    canReUseExistingDatabase = os.path.exists(PATH_SHOPS_JSON) and args.allow_update_shops
     if debugmode:
         print("DEBUGMODE!!!")
-    if 'skip_vpn_warning' not in sys.argv:
+    if not args.skip_vpn_warning:
         if canReUseExistingDatabase:
             print("Existierende " + PATH_SHOPS_JSON + " wird verwendet!")
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
-        if 'skip_vpn_warning_ip_check' not in sys.argv:
+        if not args.skip_vpn_warning_ip_check:
             try:
                 request = urllib.request.Request("https://api.ipify.org/?format=json")
                 response = loads(urllib.request.urlopen(request).read().decode())
@@ -211,7 +219,6 @@ if __name__ == '__main__':
                     print('SHOP_NEW: ' + str(newShopID) + ' | ' + shop['name'] + ' | ' + shop['link'])
 
     # Create csv file with most relevant human readable results
-    ignoreInactiveShopsInCSV = 'csv_skip_inactive_shops' in sys.argv
     skippedInactiveShops = []
     with open('shops.csv', 'w', newline='') as csvfile:
         # TODO: Add column "Beschreibung" but atm this will fuck up our CSV formatting, maybe we need to escape that String before
@@ -222,7 +229,7 @@ if __name__ == '__main__':
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for shop in shops:
-            if ignoreInactiveShopsInCSV and not shop['active']:
+            if args.csv_skip_inactive_shops and not shop['active']:
                 skippedInactiveShops.append(shop)
                 continue
             redeemable = shop['redeemable']
@@ -249,7 +256,7 @@ if __name__ == '__main__':
              UnicodeEncodeError: 'charmap' codec can't encode character '\u0308' in position 109: character maps to <undefined>
              """
             writer.writerow(columns)
-    if ignoreInactiveShopsInCSV:
+    if args.csv_skip_inactive_shops:
         print("Number of skipped inactive shops: " + str(len(skippedInactiveShops)))
     if len(skippedInactiveShops) > 0:
         print("Skipped inactive shops:")

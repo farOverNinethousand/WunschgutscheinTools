@@ -39,12 +39,31 @@ Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, ka
 Mehr zu diesem Parameter siehe Liste der Parameter unten.
 
 ### Mögliche Parameter
-| Parameter        | Erklärung    
-| :-------------: |:-------------:|
-| skip_vpn_warning      | VPN Warnung am Anfang des Scripts überspringen z.B. nützlich, wenn das Script alle X Zeit automatisch aufgerufen wird.
-| allow_update_shops      | Alte shops.json wiederverwenden und nur **neue Shops** crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!
-| csv_skip_inactive_shops      | Als 'inaktiv' markierte Shops nicht mit in die Liste aufnehmen. Was 'inaktiv' bedeutet ist noch unklar daher sollte man diesen Parameter nicht verwenden.
-| skip_vpn_warning_ip_check      | Abfrage und Anzeige der IP Adresse in der VPN Warnung deaktivieren.
+```
+usage: ShopCrawler.py [-h] [-s SKIP_VPN_WARNING]
+                      [-s2 SKIP_VPN_WARNING_IP_CHECK] [-a ALLOW_UPDATE_SHOPS]
+                      [-c CSV_SKIP_INACTIVE_SHOPS]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s SKIP_VPN_WARNING, --skip_vpn_warning SKIP_VPN_WARNING
+                        VPN Warnung mit Warten auf Benutzereingabe
+                        überspringen? Z.B. nützlich, wenn das Script alle X
+                        Zeit automatisch aufgerufen wird.
+  -s2 SKIP_VPN_WARNING_IP_CHECK, --skip_vpn_warning_ip_check SKIP_VPN_WARNING_IP_CHECK
+                        Abfrage und Anzeige der IP Adresse in der VPN Warnung
+                        überspringen/deaktivieren.
+  -a ALLOW_UPDATE_SHOPS, --allow_update_shops ALLOW_UPDATE_SHOPS
+                        Alte shops.json wiederverwenden und nur **neue Shops**
+                        crawlen/hinzufügen. Alte Shop-Daten werden nicht
+                        aktualisiert und nicht mehr existente Shops bleiben in
+                        der Liste!
+  -c CSV_SKIP_INACTIVE_SHOPS, --csv_skip_inactive_shops CSV_SKIP_INACTIVE_SHOPS
+                        Als 'inaktiv' markierte Shops nicht mit in die Liste
+                        aufnehmen. Was 'inaktiv' bedeutet ist noch unklar,
+                        daher sollte man diesen Parameter nicht verwenden.
+
+```
 
 # TODOs
 * Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)
