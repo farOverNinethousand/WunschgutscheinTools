@@ -84,7 +84,7 @@ def saveJson(obj, path):
 if __name__ == '__main__':
 
     my_parser = argparse.ArgumentParser()
-    my_parser.add_argument('-s', '--skip_vpn_warning', help='VPN Warnung mit Warten auf Benutzereingabe überspringen? Z.B. nützlich, wenn das Script alle X Zeit automatisch aufgerufen wird.', type=bool, default=False)
+    my_parser.add_argument('-s', '--skip_vpn_warning', help='VPN Warnung mit Warten auf Benutzereingabe überspringen? Nützlich, wenn z.B. das Script alle X Zeit automatisch aufgerufen wird.', type=bool, default=False)
     my_parser.add_argument('-s2', '--skip_vpn_warning_ip_check', help='Abfrage und Anzeige der IP Adresse in der VPN Warnung überspringen/deaktivieren.', type=bool, default=False)
     my_parser.add_argument('-a', '--allow_update_shops', help='Alte shops.json wiederverwenden und nur neue Shops crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!', type=bool, default=False)
     my_parser.add_argument('-c', '--csv_skip_inactive_shops', help='Als \'inaktiv\' markierte Shops nicht mit in die Liste aufnehmen. Was \'inaktiv\' bedeutet ist noch unklar, daher sollte man diesen Parameter nicht verwenden.', type=bool, default=False)
