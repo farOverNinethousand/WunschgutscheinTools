@@ -76,6 +76,7 @@ def isRelevantCardValue(cardValueCent: int) -> bool:
 
 
 def saveJson(obj, path):
+    """ Saves given object as json to desired path. """
     with open(path, 'w') as ofile:
         json.dump(obj, ofile)
 
