@@ -178,7 +178,7 @@ if __name__ == '__main__':
     for shop in crawledShopsRaw:
         shopID = shop['id']
         if shopID in shopIDsToUpdate:
-            print("Working on shop " + str(progress) + " / " + str(len(shopIDsToUpdate)))
+            print("Working on shop " + str(progress) + "/" + str(len(shopIDsToUpdate)))
             extendedShopInfo = callAPI('/shop/' + str(shopID))
             # Merge both dicts so we got all shop information in one dict
             shops.append({**shop, **extendedShopInfo})
