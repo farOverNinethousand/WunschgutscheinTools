@@ -1,6 +1,5 @@
 import re
 import sys
-from typing import Tuple
 
 import pyclip
 
@@ -52,11 +51,14 @@ class Voucher:
     def parseVouchers(text: str, filterDuplicates: bool) -> list:
         """ Parses vouchers from within given text. """
         ret = []
-        results = re.compile("(" + PATTERN_VOUCHER + "[ \t]+.+)").findall(text)
+        lines = text.split(sep='\n')
         dupes = []
-        for result in results:
-            result = result.strip()
-            voucherInfoRegEx = re.compile(r'(' + PATTERN_VOUCHER + r')' + r'([ \t]+(.+)?)?').search(result)
+        for line in lines:
+            line = line.strip()
+            voucherInfoRegEx = re.compile("^(" + PATTERN_VOUCHER + ")([ \t]*(.+))?").search(line)
+            if not voucherInfoRegEx:
+                # We cannot process lines that do not contain any vouchers
+                continue
             voucherCode = voucherInfoRegEx.group(1)
             moneyValueOrErrormessage = voucherInfoRegEx.group(3)
             voucher = Voucher(voucherCode)
@@ -136,32 +138,6 @@ def getVoucherResultText(vouchers: list) -> str:
 
 class VoucherHelper:
 
-    def getSortedVoucherListWithResults(self, initialVoucherList: list, voucherListWithResults: list) -> Tuple[list, str]:
-        """ Combines the initially added list with the list containing the results in order to return that list in original order. """
-        result = []
-        notfoundCodes = []
-        totalAmount = 0
-        for voucherCode in initialVoucherList:
-            voucherWithResult = None
-            for voucherWithResultTmp in voucherListWithResults:
-                if voucherWithResultTmp.startswith(voucherCode):
-                    voucherWithResult = voucherWithResultTmp
-                    break
-            if voucherWithResult is not None:
-                moneyRegex = re.compile(PATTERN_VOUCHER + r'[ \t]+(\d+(,\d{1,2})?)').search(voucherWithResult)
-                if moneyRegex:
-                    amount = moneyRegex.group(1).replace(",", ".")
-                    totalAmount += float(amount)
-                result.append(voucherWithResult)
-            else:
-                notfoundCodes.append(voucherCode)
-        if len(notfoundCodes) > 0:
-            print("Achtung! Einige Codes der ursprünglichen Codes konnten nicht gefunden werden:")
-            print(str(notfoundCodes))
-        thisAmountText = "---"
-        thisAmountText += "\n" + str(totalAmount)
-        return result, thisAmountText
-
     if __name__ == '__main__':
         print("Gib alle WGs zeilengetrennt ein:")
         useOldURLHandling = False
@@ -175,8 +151,29 @@ class VoucherHelper:
             print(str(len(voucherCodes)) + " GS gefunden und alle Links in die Zwischenablage kopiert!")
             while True:
                 print("Gib dieselbe Liste von Codes mit Ergebnis am Ende ein z.B.: 'aaa-b5f-cgh Fehler: bla' oder 'aaa-b5f-cgh 25,00':")
-                voucherCodes = getVoucherCodes()
-                voucherCodesWithResultsSorted, amountText = getSortedVoucherListWithResults(voucherCodes, voucherCodes)
+                voucherCodesNew = getVoucherCodes()
+                voucherCodesWithResultsSorted = []
+                notfoundCodes = []
+                totalAmount = 0
+                for voucherCode in voucherCodes:
+                    voucherWithResult = None
+                    for voucherWithResultTmp in voucherCodesNew:
+                        if voucherWithResultTmp.startswith(voucherCode):
+                            voucherWithResult = voucherWithResultTmp
+                            break
+                    if voucherWithResult is not None:
+                        moneyRegex = re.compile(PATTERN_VOUCHER + r'[ \t]+(\d+(,\d{1,2})?)').search(voucherWithResult)
+                        if moneyRegex:
+                            amount = moneyRegex.group(1).replace(",", ".")
+                            totalAmount += float(amount)
+                        voucherCodesWithResultsSorted.append(voucherWithResult)
+                    else:
+                        notfoundCodes.append(voucherCode)
+                if len(notfoundCodes) > 0:
+                    print("Achtung! Einige Codes der ursprünglichen Codes konnten nicht gefunden werden:")
+                    print(str(notfoundCodes))
+                amountText = "---"
+                amountText += "\n" + str(totalAmount)
                 sortedVouchersWithResultsAsText = ""
                 for voucherCodeWithResult in voucherCodesWithResultsSorted:
                     sortedVouchersWithResultsAsText += "\n" + voucherCodeWithResult
@@ -203,7 +200,7 @@ class VoucherHelper:
             pyclip.copy(text)
             print("********************************************************************************")
             print("Es wurden " + str(len(voucherCodes)) + " Codes gefunden :)")
-            print("Das Ergebnis wurde in die Zwischenablage kopiert!")
+            print("Das Ergebnis wurde in die Zwischenablage kopiert.")
 
         # input("Drücke ENTER zum Beenden")
         print("Ende")
