@@ -1,6 +1,6 @@
 # Wunschgutschein.de und Shoppingkonto.de Tools
 
-Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern automatisch crawlen
+Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
 
 # Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
 ### Benötigte Browser Addons
@@ -31,12 +31,17 @@ Nach erfolgreicher Einlösung wirst du automatisch zur Einlöseseite weitergelei
 
 # ShopCrawler - Vollständige Liste aller Einlösepartner crawlen  
 Mit dem ShopCrawler kannst du eine aktuelle Liste aller WG Einlösepartner, einlösbare Wertstufen usw. erstellen lassen.  
-Dieser Vorgang kann bis zu 45 Minuten dauern.
+Dieser Vorgang kann mehrere Minuten dauern.
 1. ShopCrawler.py starten.
 2. Nach dem Crawlvorgang finden sich die Daten in den Dateien ``shops.csv`` und ``shops.json``.  
 3. Optional:  
 Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, kann man einfach die zuletzt erstellte ``shops.json`` im Ordner liegen lassen und das Script mit dem Parameter ``allow_update_shops`` erneut durchlaufen lassen.  
 Mehr zu diesem Parameter siehe Liste der Parameter unten.
+
+# Fertige Shoplisten
+Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
+https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
+Achtet aufs Datum im Dateinamen!
 
 ### Mögliche Parameter
 ```
@@ -106,7 +111,7 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 | Fehlercode        | Text           | Bedeutung  |
 | :-------------: |:-------------:| -----:|
 | STDx23      | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt
-| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre
+| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen
 | RDMx12      | wgs.std.err.occurred (RDMx12) | Unbekannt
 | RDMx5      | RDMx5 | Problem beim Einlösepartner
 
