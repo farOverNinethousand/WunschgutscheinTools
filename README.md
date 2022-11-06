@@ -38,11 +38,6 @@ Dieser Vorgang kann mehrere Minuten dauern.
 Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, kann man einfach die zuletzt erstellte ``shops.json`` im Ordner liegen lassen und das Script mit dem Parameter ``allow_update_shops`` erneut durchlaufen lassen.  
 Mehr zu diesem Parameter siehe Liste der Parameter unten.
 
-# Fertige Shoplisten
-Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
-https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
-Achtet aufs Datum im Dateinamen!
-
 ### Mögliche Parameter
 ```
 usage: ShopCrawler.py [-h] [-s SKIP_VPN_WARNING]
@@ -69,6 +64,11 @@ optional arguments:
                         daher sollte man diesen Parameter nicht verwenden.
 
 ```
+
+# Fertige Shoplisten
+Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
+https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
+Achtet aufs Datum im Dateinamen!
 
 # TODOs
 * Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)
