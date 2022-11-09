@@ -105,7 +105,7 @@ POST {"redeemLinkToken":"<redeemLinkToken>"}
 | VCRx1     | Bitte achten Sie auf Groß- u. Kleinschreibung...      |   GS ungültig |
 | DUMMY     | DUMMY      |   DUMMY |
 
-# Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung)
+# Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung bei Eingabe der persönlichen Daten)
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
 
 | Fehlercode        | Text           | Bedeutung  |
@@ -114,6 +114,13 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 | RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen
 | RDMx12      | wgs.std.err.occurred (RDMx12) | Unbekannt
 | RDMx5      | RDMx5 | Problem beim Einlösepartner
+
+# Bekannte Fehlercodes und deren Bedeutung (ganz am Ende wenn man den Link zum GS bereits per Mail erhalten hat und diesen öffnen will)
+Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
+
+| Fehlercode        | Text           | Bedeutung  |
+| :-------------: |:-------------:| -----:|
+| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Zu viele GS in kruzer Zeit eingelöst -> Abwarten und es einige Tage später erneut versuchen oder den Support kontaktieren.
 
 # FAQ
 **Ich kann bestimmte Einlösepartner z.B. Kaufland nicht auswählen, woran liegt das und was kann ich tun?**  
