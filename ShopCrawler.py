@@ -2,20 +2,22 @@ import argparse
 import csv
 import logging
 import os
-import urllib.parse
-import urllib.request
 from datetime import datetime, timedelta
 from typing import Any
 
+import httpx
 import simplejson as json
-from json import loads
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 API_BASE = "https://einloesen.wunschgutschein.de/api"
+""" 2022-01-09: The Accept-Language header is really important as the returned json response can vary based on that.
+ For example "en-EN,en;q=0.5" will return a different list of supported shops on GET "/shop/categories/1".  """
 basicHeaders = {"X-Requested-With": "XMLHttpRequest",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"}
+                "Accept-Language": "de-DE,de;q=0.5",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"}
+PATH_SHOPS_CSV = "shops.csv"
 PATH_SHOPS_JSON = "shops.json"
 PATH_SHOPS_RAW_JSON = "shops_raw.json"
 # These ones are the interesting/most common possible card values
@@ -23,26 +25,13 @@ relevantRedeemableCardValues = [10, 15, 20, 25, 50, 100]
 debugmode = False
 
 
-def doPostRequest(targetURL: str, postData: dict, thisheaders: dict) -> str:
-    request = urllib.request.Request(targetURL, data=urllib.parse.urlencode(postData).encode(), headers=thisheaders)
-    thisanswer = urllib.request.urlopen(request).read().decode()
-    return thisanswer
-
-
-def doGetRequest(targetURL: str) -> str:
-    request = urllib.request.Request(targetURL)
-    thisanswer = urllib.request.urlopen(request).read().decode()
-    return thisanswer
-
-
 def callAPI(path: str, returnJson: bool = True) -> Any:
     """ Performs API request. """
-    request = urllib.request.Request(API_BASE + path, headers=basicHeaders)
-    response = urllib.request.urlopen(request).read().decode()
+    resp = httpx.get(url=API_BASE + path, headers=basicHeaders)
     if returnJson:
-        return loads(response)
+        return resp.json()
     else:
-        return response
+        return resp.text
 
 
 def booleanToExcel(mybool: bool) -> str:
@@ -102,9 +91,9 @@ if __name__ == '__main__':
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
         if not args.skip_vpn_warning_ip_check:
             try:
-                request = urllib.request.Request("https://api.ipify.org/?format=json")
-                response = loads(urllib.request.urlopen(request).read().decode())
-                print("Derzeitige IP: " + response["ip"])
+                req = httpx.get(url="https://api.ipify.org/?format=json")
+                ip_info = req.json()
+                print("Derzeitige IP: " + ip_info["ip"])
             except:
                 print("Failed to get IP via api.ipify.org")
         print("Falls du nach dem Crawlvorgang mit derselben IP zeitnah Gutscheine einlöst, könnte es zu Sperrungen kommen!")
@@ -113,8 +102,6 @@ if __name__ == '__main__':
     timestampStart = datetime.now().timestamp()
     # Crawl all categories and make a mapping
     categoriesList = callAPI('/shop/categories/1')
-    # TODO: Find out why category 31 is missing in the API response we get
-    categoriesList.append({'id': 31, 'name': 'Restaurant', 'slug': 'Lokalhelden'})
     categoriesMapping = {}
     for category in categoriesList:
         categoriesMapping.setdefault(category['id'], category)
@@ -158,6 +145,9 @@ if __name__ == '__main__':
             shopIDsToUpdate.append(currentShop['id'])
     # Beautify some data so in the end we got one json that contains everything
     for shop in crawledShopsRaw:
+        # slug = shop['slug']
+        # if slug == 'lokalhelden-287':
+        #     print("Debug")
         categoryIDs = shop['categories']
         categoriesHumanReadable = []
         for categoryID in categoryIDs:
@@ -221,9 +211,10 @@ if __name__ == '__main__':
 
     # Create csv file with most relevant human readable results
     skippedInactiveShops = []
-    with open('shops.csv', 'w', newline='') as csvfile:
+    with open(PATH_SHOPS_CSV, 'w', newline='') as csvfile:
         # TODO: Add column "Beschreibung" but atm this will fuck up our CSV formatting, maybe we need to escape that String before
         fieldnames = ['Shop', 'Beschreibung_net_fertig', 'URL', 'Einlöseurl', 'Kategorien', 'Online', 'OfflineFiliale']
+        # Add one column for each possible card value
         for possibleCardValueEuros in relevantRedeemableCardValues:
             fieldnames.append("Kartenwert " + str(possibleCardValueEuros) + "€")
         fieldnames.append("Sonstige Kartenwerte")
@@ -250,7 +241,7 @@ if __name__ == '__main__':
                     columns["Kartenwert " + str(possibleCardValue) + "€"] = booleanToExcel(False)
             otherCardValues = shop.get('voucherValuesMisc', [])
             if len(otherCardValues) > 0:
-                columns['Sonstige Kartenwerte'] = str(shop.get('voucherValuesMisc', []))
+                columns['Sonstige Kartenwerte'] = str(otherCardValues)
             else:
                 columns['Sonstige Kartenwerte'] = 'KEINE'
             """ TODO: Check:
@@ -263,4 +254,4 @@ if __name__ == '__main__':
         print("Skipped inactive shops:")
         print(str(skippedInactiveShops))
     print("Total time required: " + getFormattedPassedTime(timestampStart))
-    print("DONE")
+    print(f'DONE, results see {PATH_SHOPS_CSV}, {PATH_SHOPS_JSON} and {PATH_SHOPS_RAW_JSON}')
