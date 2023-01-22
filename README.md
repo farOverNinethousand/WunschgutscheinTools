@@ -2,6 +2,21 @@
 
 Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
 
+## Bekannte Probleme seit 01-2023
+Durch Änderungen der WG Webseite gibt es derzeit folgende Probleme mit den unten aufgelisteten Addons:  
+Redirector:  
+Der automatische Redirect zum voreingestellten Wunsch-Shop kann dazu führen, dass keine Wertstufe vorausgewählt ist und sich keine auswählen lässt oder eine falsche Wertstufe vorausgewählt ist.  
+Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen Redirects abzuschalten.
+Autofill:  
+Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
+Workaround: Shopseite im letzten Schritt manuell neuladen und sich wieder zum Ende durchklicken dann sollte Autofill greifen.  
+WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.
+
+Beide Probleme sind ggf. nicht so einfach behebbar.  
+Ein besserer Ansatz wäre wohl ein Greasemonkey Script. Sollte ich mal zu viel Zeit haben, werde ich diese Repo dementsprechend aktualisieren.  
+Die Shop-Crawler Scripte funktionieren weiterhin und die Infos im FAQ unten sind ebenfalls aktuell.
+
+
 # Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
 ### Benötigte Browser Addons
 * [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
