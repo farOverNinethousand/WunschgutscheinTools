@@ -9,7 +9,7 @@ Der automatische Redirect zum voreingestellten Wunsch-Shop kann dazu führen, da
 Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen Redirects abzuschalten.
 Autofill:  
 Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
-Workaround: Shopseite im letzten Schritt manuell neuladen und sich wieder zum Ende durchklicken dann sollte Autofill greifen.  
+Workaround: Shop-Übersicht nach Eingabe des Gutscheins 1x manuell neuladen und sich zum Ende durchklicken dann sollte Autofill greifen.  
 WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.
 
 Beide Probleme sind ggf. nicht so einfach behebbar.  
@@ -83,7 +83,14 @@ optional arguments:
 # Fertige Shoplisten
 Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
 https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
-Achtet aufs Datum im Dateinamen!
+Achtet aufs Datum im Dateinamen!  
+**Wichtig! Diese shopliste kann Shops enthalten, die nicht bei allen Wunschgutschein-Varianten verfügbar sind. Dies ist kein Fehler!  
+Die Shops für alle existierenden WG Varianten separat herauszufinden wäre ein sehr hoher Aufwand und man bräuchte aktive Sessions also gültige Gutscheine für jeden WG Typ.  
+Beispiel: Aral/Shell/Esso also Tankstellengutscheine werden zwar gelistet, aber sind eigentlich nur wirklich auswählbar, wenn man einen WG Tankgutschein z.B. von hier kauft:  
+https://geschenkgutscheine.de/products/tankgutschein  
+Mehr Infos:  
+https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
+
 
 # TODOs
 * Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)

@@ -1,4 +1,4 @@
 pyclip==0.7.0
 hyper~=0.7.0
-simplejson==3.18.1
+simplejson~=3.18.3
 httpx~=0.23.1

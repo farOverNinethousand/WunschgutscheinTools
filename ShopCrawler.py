@@ -91,9 +91,10 @@ if __name__ == '__main__':
         print("Hinweis: Es wird empfohlen einen VPN zu verwenden, bevor du dieses Script durchlaufen lässt!")
         if not args.skip_vpn_warning_ip_check:
             try:
+                print("Finde aktuelle IP Adresse heraus...")
                 req = httpx.get(url="https://api.ipify.org/?format=json")
                 ip_info = req.json()
-                print("Derzeitige IP: " + ip_info["ip"])
+                print("Aktuelle IP: " + ip_info["ip"])
             except:
                 print("Failed to get IP via api.ipify.org")
         print("Falls du nach dem Crawlvorgang mit derselben IP zeitnah Gutscheine einlöst, könnte es zu Sperrungen kommen!")
@@ -108,10 +109,14 @@ if __name__ == '__main__':
     # Save categories mapping as json file
     saveJson(categoriesMapping, 'categories.json')
     # Get list of basic shop information
-    crawledShopsRawOriginal = callAPI('/shop/wall/1?onlyWithLogo=1')
-    crawledShopsRaw = crawledShopsRawOriginal.copy()
+    """ TODO: Umbauen, sodass alle Infos mit einem einzelnen Request von hier geholt werden:
+    https://einloesen.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues
+    Ergebnis variiert je nach Parameter z.B.
+    https://einloesen.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
+    """
+    crawledShopsRawNowFromAPI = callAPI('/shop/wall/1?onlyWithLogo=1')
     # Save as json for later offline examination
-    saveJson(crawledShopsRaw, PATH_SHOPS_RAW_JSON)
+    saveJson(crawledShopsRawNowFromAPI, PATH_SHOPS_RAW_JSON)
 
     shopIDsToUpdate = []
     shopIDsNew = []
@@ -122,7 +127,7 @@ if __name__ == '__main__':
         with open(os.path.join(os.getcwd(), PATH_SHOPS_JSON), encoding='utf-8') as infile:
             storedShops = json.load(infile)
         newShops = []
-        for currentShop in crawledShopsRaw:
+        for currentShop in crawledShopsRawNowFromAPI:
             currentShopID = currentShop['id']
             foundShop = False
             for storedShop in storedShops:
@@ -130,57 +135,59 @@ if __name__ == '__main__':
                     foundShop = True
                     break
             if not foundShop:
-                # 2022-06-23: Moved output to other place after crawling so that we got all shop info e.g. also shop URL
+                # New shopID found: Store so we can crawl the details of that shop later
                 # print("SHOP_NEW: " + currentShop['name'] + " | ID: " + str(currentShopID))
                 shopIDsToUpdate.append(currentShopID)
                 newShops.append(currentShop)
                 shopIDsNew.append(currentShopID)
         print("Number of new shops: " + str(len(newShops)))
         # Continue with old dataset now that we know which shops need re-crawl
-        crawledShopsRaw = storedShops
-        crawledShopsRaw += newShops
+        crawledShopsRawToUse = storedShops + newShops
     else:
         # Add all shopIDs to list so we will update data of all shops
-        for currentShop in crawledShopsRaw:
-            shopIDsToUpdate.append(currentShop['id'])
-    # Beautify some data so in the end we got one json that contains everything
-    for shop in crawledShopsRaw:
-        # slug = shop['slug']
-        # if slug == 'lokalhelden-287':
-        #     print("Debug")
-        categoryIDs = shop['categories']
+        crawledShopsRawToUse = crawledShopsRawNowFromAPI.copy()
+        for shopRaw in crawledShopsRawToUse:
+            shopIDsToUpdate.append(shopRaw['id'])
+
+    # Collect detailed info for all shops - will may take some time
+    print('Crawling details of shops: ' + str(len(shopIDsToUpdate)))
+    numberofProcessedRequestsToCrawlShopDetails = 1
+    shops = []
+    debugStopFlag = False
+    for shop in crawledShopsRawToUse:
+        shopID = shop['id']
+        shopDetailed = None
+        if shopID in shopIDsToUpdate:
+            print("Working on shop " + str(numberofProcessedRequestsToCrawlShopDetails) + "/" + str(len(shopIDsToUpdate)))
+            extendedShopInfo = callAPI('/shop/' + str(shopID))
+            # Merge both dicts so we got all shop information in one dict
+            shopDetailed = {**shop, **extendedShopInfo}
+            if numberofProcessedRequestsToCrawlShopDetails >= 10 and debugmode:
+                print("Stopping because: debugmode is enabled")
+                debugStopFlag = True
+            numberofProcessedRequestsToCrawlShopDetails += 1
+        else:
+            # Append old dataset without updating it
+            shopDetailed = shop
+        # Beautify some data so in the end we got one json that contains everything
+        categoryIDs = shopDetailed['categories']
         categoriesHumanReadable = []
         for categoryID in categoryIDs:
             categoriesHumanReadable.append(categoriesMapping[categoryID]['name'])
-        shop['categories_human_readable'] = categoriesHumanReadable
-        voucherValues = shop.get('voucherValues', [])
+        shopDetailed['categories_human_readable'] = categoriesHumanReadable
+        voucherValues = shopDetailed.get('voucherValues', [])
         otherCardValues = []
         for voucherValue in voucherValues:
             valueInCent = voucherValue['valueInCent']
             if not isRelevantCardValue(valueInCent):
                 otherCardValues.append(valueInCent / 100)
-        shop['voucherValuesMisc'] = otherCardValues
+        shopDetailed['voucherValuesMisc'] = otherCardValues
+        shops.append(shopDetailed)
+        # Check for stop flag
+        if debugStopFlag:
+            break
 
-    # Collect detailed info for all shops - will may take some time
-    print('Crawling details of shops: ' + str(len(shopIDsToUpdate)))
-    progress = 1
-    shops = []
-    for shop in crawledShopsRaw:
-        shopID = shop['id']
-        if shopID in shopIDsToUpdate:
-            print("Working on shop " + str(progress) + "/" + str(len(shopIDsToUpdate)))
-            extendedShopInfo = callAPI('/shop/' + str(shopID))
-            # Merge both dicts so we got all shop information in one dict
-            shops.append({**shop, **extendedShopInfo})
-            progress += 1
-            if progress >= 4 and debugmode:
-                print("Stopping because: debugmode is enabled")
-                break
-        else:
-            # Append old dataset without updating it
-            shops.append(shop)
-
-    # Check for possible new fields
+    # Check for possible new 'redeemable' fields
     for shop in shops:
         redeemable = shop['redeemable']
         redeemableKnownFields = ['REDEEMABLE_ONLINE', 'REDEEMABLE_BRANCH']
@@ -195,7 +202,7 @@ if __name__ == '__main__':
     for oldShop in storedShops:
         foundShop = False
         oldShopID = oldShop['id']
-        for shop in crawledShopsRawOriginal:
+        for shop in crawledShopsRawNowFromAPI:
             if shop['id'] == oldShopID:
                 foundShop = True
                 break
@@ -217,7 +224,8 @@ if __name__ == '__main__':
         # Add one column for each possible card value
         for possibleCardValueEuros in relevantRedeemableCardValues:
             fieldnames.append("Kartenwert " + str(possibleCardValueEuros) + "€")
-        fieldnames.append("Sonstige Kartenwerte")
+        key_MiscCardValues = "Sonstige Kartenwerte"
+        fieldnames.append(key_MiscCardValues)
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for shop in shops:
@@ -241,9 +249,9 @@ if __name__ == '__main__':
                     columns["Kartenwert " + str(possibleCardValue) + "€"] = booleanToExcel(False)
             otherCardValues = shop.get('voucherValuesMisc', [])
             if len(otherCardValues) > 0:
-                columns['Sonstige Kartenwerte'] = str(otherCardValues)
+                columns[key_MiscCardValues] = str(otherCardValues)
             else:
-                columns['Sonstige Kartenwerte'] = 'KEINE'
+                columns[key_MiscCardValues] = 'KEINE'
             """ TODO: Check:
              UnicodeEncodeError: 'charmap' codec can't encode character '\u0308' in position 109: character maps to <undefined>
              """
@@ -254,4 +262,4 @@ if __name__ == '__main__':
         print("Skipped inactive shops:")
         print(str(skippedInactiveShops))
     print("Total time required: " + getFormattedPassedTime(timestampStart))
-    print(f'DONE, results see {PATH_SHOPS_CSV}, {PATH_SHOPS_JSON} and {PATH_SHOPS_RAW_JSON}')
+    print(f'DONE, results are were saved in files: {PATH_SHOPS_CSV}, {PATH_SHOPS_JSON} and {PATH_SHOPS_RAW_JSON}')
