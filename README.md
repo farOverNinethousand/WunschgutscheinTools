@@ -10,7 +10,9 @@ Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen 
 Autofill:  
 Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
 Workaround: Shop-Übersicht nach Eingabe des Gutscheins 1x manuell neuladen und sich zum Ende durchklicken dann sollte Autofill greifen.  
-WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.
+**WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.  
+Das bedeutet für die meisten User dürfte es reichen, sich mehrere Browserprofile anzulegen und die GS ohne das 'Autofill' Addon einzulösen.**
+
 
 Beide Probleme sind ggf. nicht so einfach behebbar.  
 Ein besserer Ansatz wäre wohl ein Greasemonkey Script. Sollte ich mal zu viel Zeit haben, werde ich diese Repo dementsprechend aktualisieren.  
