@@ -30,10 +30,10 @@ Dann wie folgt importieren:
 Optionen -> Import/Export -> In das große Textfeld den kompletten Inhalt der Datei einfügen -> Import --> Wechseln ins Tab "Form Fields" -> Links unten auf "Save" klicken.  
 Optional:  
 Wenn du Profile hast, die nur für bestimmte Einlösepartner angewendet werden sollen, kannst du im jeweiligen Profil unten bei ``site`` die URL zum Shop angeben z.B.  
-``https://einloesen.wunschgutschein.de/shops/10837/amazon``  
+``https://app.wunschgutschein.de/shops/10837/amazon``  
 Wenn du nur wenige Profile hast und/oder den Einlösepartner ausschließlich über das Redirector Addon steuern möchtest solltest du dafür sorgen, dass alle Autofill Profile für alle Shops gelten.  
 Schreibe dafür folgenden Wert in das Site Feld:  
-``https://einloesen.wunschgutschein.de/shops/*``  
+``https://app.wunschgutschein.de/shops/*``  
 (= Standard, wenn du das Beispielprofil aus dieser Repository verwendest.)
 4. Jetzt in Autofill das Beispielprofil beliebig oft duplizieren und mit eigenen Daten befüllen.  
 Mit ALT + G gelangst du zur Übersicht der Profile und kannst bestehende duplizieren/ändern.  
@@ -100,20 +100,20 @@ https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
 
 # Relevante WG API Calls
 ```
-https://einloesen.wunschgutschein.de/api/shop/11334
+https://app.wunschgutschein.de/api/shop/11334
 
-https://einloesen.wunschgutschein.de/api/shop/categories/1
-https://einloesen.wunschgutschein.de/api/shop/categories/2
-https://einloesen.wunschgutschein.de/api/shop/categories/3
+https://app.wunschgutschein.de/api/shop/categories/1
+https://app.wunschgutschein.de/api/shop/categories/2
+https://app.wunschgutschein.de/api/shop/categories/3
 
-https://einloesen.wunschgutschein.de/api/redeem/maintenance-status
+https://app.wunschgutschein.de/api/redeem/maintenance-status
 
-https://einloesen.wunschgutschein.de/api/shop/wall/1?onlyWithLogo=1
-https://einloesen.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&voucherValue=2500&currency=EUR
+https://app.wunschgutschein.de/api/shop/wall/1?onlyWithLogo=1
+https://app.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&voucherValue=2500&currency=EUR
 
-https://einloesen.wunschgutschein.de/api/redeem/link/<redeemLinkToken>
+https://app.wunschgutschein.de/api/redeem/link/<redeemLinkToken>
 
-https://einloesen.wunschgutschein.de/api/redeem/merchantcode
+https://app.wunschgutschein.de/api/redeem/merchantcode
 POST {"redeemLinkToken":"<redeemLinkToken>"}
 
 ```

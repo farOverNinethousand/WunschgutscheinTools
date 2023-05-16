@@ -11,7 +11,7 @@ import simplejson as json
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.WARNING)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-API_BASE = "https://einloesen.wunschgutschein.de/api"
+API_BASE = "https://app.wunschgutschein.de/api"
 """ 2022-01-09: The Accept-Language header is really important as the returned json response can vary based on that.
  For example "en-EN,en;q=0.5" will return a different list of supported shops on GET "/shop/categories/1".  """
 basicHeaders = {"X-Requested-With": "XMLHttpRequest",
@@ -110,9 +110,9 @@ if __name__ == '__main__':
     saveJson(categoriesMapping, 'categories.json')
     # Get list of basic shop information
     """ TODO: Umbauen, sodass alle Infos mit einem einzelnen Request von hier geholt werden:
-    https://einloesen.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues
+    https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues
     Ergebnis variiert je nach Parameter z.B.
-    https://einloesen.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
+    https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
     """
     crawledShopsRawNowFromAPI = callAPI('/shop/wall/1?onlyWithLogo=1')
     # Save as json for later offline examination
@@ -234,7 +234,7 @@ if __name__ == '__main__':
                 continue
             redeemable = shop['redeemable']
             columns = {'Shop': shop['name'], 'URL': shop['link'],
-                       'Einlöseurl': 'https://einloesen.wunschgutschein.de/shops/' + str(shop['id']) + '/' + shop['slug'],
+                       'Einlöseurl': 'https://app.wunschgutschein.de/shops/' + str(shop['id']) + '/' + shop['slug'],
                        "Kategorien": str(shop["categories_human_readable"]),
                        'Online': booleanToExcel('REDEEMABLE_ONLINE' in redeemable), 'OfflineFiliale': booleanToExcel('REDEEMABLE_BRANCH' in redeemable)
                        # TODO: Using "booleanToExcel" for "OfflineFiliale" will break our CSVs column headers? -.-
