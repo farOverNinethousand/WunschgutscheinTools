@@ -1,6 +1,6 @@
-# Wunschgutschein.de und Shoppingkonto.de Tools
+# Wunschgutschein.de, Wunschgutschein.at und Shoppingkonto.de Tools
 
-Wunschgutschein und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
+Wunschgutschein und shoppingkonto.de/.at Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
 
 ## Bekannte Probleme seit 01-2023
 Durch Änderungen der WG Webseite gibt es derzeit folgende Probleme mit den unten aufgelisteten Addons:  
@@ -50,37 +50,20 @@ Nach erfolgreicher Einlösung wirst du automatisch zur Einlöseseite weitergelei
 Mit dem ShopCrawler kannst du eine aktuelle Liste aller WG Einlösepartner, einlösbare Wertstufen usw. erstellen lassen.  
 Dieser Vorgang kann mehrere Minuten dauern.
 1. ShopCrawler.py starten.
-2. Nach dem Crawlvorgang finden sich die Daten in den Dateien ``shops.csv`` und ``shops.json``.  
+2. Nach dem Crawlvorgang finden sich die Daten in den Dateien ``XY_shops.csv`` und ``XY_shops.json``.  
 3. Optional:  
-Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, kann man einfach die zuletzt erstellte ``shops.json`` im Ordner liegen lassen und das Script mit dem Parameter ``allow_update_shops`` erneut durchlaufen lassen.  
-Mehr zu diesem Parameter siehe Liste der Parameter unten.
+Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, kann man einfach die zuletzt erstellte ``XY_shops.json`` im Ordner liegen lassen und das Script mit dem Parameter ``allow_update_shops`` erneut durchlaufen lassen.
 
 ### Mögliche Parameter
 ```
-usage: ShopCrawler.py [-h] [-s SKIP_VPN_WARNING]
-                      [-s2 SKIP_VPN_WARNING_IP_CHECK] [-a ALLOW_UPDATE_SHOPS]
+usage: ShopCrawler.py [-h] [-a ALLOW_UPDATE_SHOPS]
                       [-c CSV_SKIP_INACTIVE_SHOPS]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -s SKIP_VPN_WARNING, --skip_vpn_warning SKIP_VPN_WARNING
-                        VPN Warnung mit Warten auf Benutzereingabe
-                        überspringen? Z.B. nützlich, wenn das Script alle X
-                        Zeit automatisch aufgerufen wird.
-  -s2 SKIP_VPN_WARNING_IP_CHECK, --skip_vpn_warning_ip_check SKIP_VPN_WARNING_IP_CHECK
-                        Abfrage und Anzeige der IP Adresse in der VPN Warnung
-                        überspringen/deaktivieren.
-  -a ALLOW_UPDATE_SHOPS, --allow_update_shops ALLOW_UPDATE_SHOPS
-                        Alte shops.json wiederverwenden und nur **neue Shops**
-                        crawlen/hinzufügen. Alte Shop-Daten werden nicht
-                        aktualisiert und nicht mehr existente Shops bleiben in
-                        der Liste!
-  -c CSV_SKIP_INACTIVE_SHOPS, --csv_skip_inactive_shops CSV_SKIP_INACTIVE_SHOPS
-                        Als 'inaktiv' markierte Shops nicht mit in die Liste
-                        aufnehmen. Was 'inaktiv' bedeutet ist noch unklar,
-                        daher sollte man diesen Parameter nicht verwenden.
-
+ShopCrawler.py: error: unrecognized arguments: - help
 ```
+
+# Anleitung Shopliste für Wunschgutschein.at (Österreich) erstellen
+Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
+
 
 # Fertige Shoplisten
 Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
@@ -90,12 +73,13 @@ Achtet aufs Datum im Dateinamen!
 Die Shops für alle existierenden WG Varianten separat herauszufinden wäre ein sehr hoher Aufwand und man bräuchte aktive Sessions also gültige Gutscheine für jeden WG Typ.  
 Beispiel: Aral/Shell/Esso also Tankstellengutscheine werden zwar gelistet, aber sind eigentlich nur wirklich auswählbar, wenn man einen WG Tankgutschein z.B. von hier kauft:  
 https://geschenkgutscheine.de/products/tankgutschein  
+und:  
+https://app.wunschgutschein.de/mobilitaet  
 Mehr Infos:  
 https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
 
 
 # TODOs
-* Shoplisten-Crawler verbessern (Spalte "Beschreibung" zerschießt die csv, vermutlich wegen nicht escapter Zeichen)
 * VoucherHelper aktualisieren (Gutscheincodeformat ohne Bindestrich unterstützen und Erfassung verbessern)
 
 # Relevante WG API Calls
@@ -110,6 +94,9 @@ https://app.wunschgutschein.de/api/redeem/maintenance-status
 
 https://app.wunschgutschein.de/api/shop/wall/1?onlyWithLogo=1
 https://app.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&voucherValue=2500&currency=EUR
+
+https://app.wunschgutschein.de/api/redeem/variation/de
+https://app.wunschgutschein.de/api/redeem/variation/at
 
 https://app.wunschgutschein.de/api/redeem/link/<redeemLinkToken>
 
