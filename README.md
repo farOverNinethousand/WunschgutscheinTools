@@ -2,21 +2,18 @@
 
 Wunschgutschein und shoppingkonto.de/.at Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
 
-## Bekannte Probleme seit 01-2023
-Durch Änderungen der WG Webseite gibt es derzeit folgende Probleme mit den unten aufgelisteten Addons:  
-Redirector:  
-Der automatische Redirect zum voreingestellten Wunsch-Shop kann dazu führen, dass keine Wertstufe vorausgewählt ist und sich keine auswählen lässt oder eine falsche Wertstufe vorausgewählt ist.  
-Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen Redirects abzuschalten.
-Autofill:  
-Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
-Workaround: Shop-Übersicht nach Eingabe des Gutscheins 1x manuell neuladen und sich zum Ende durchklicken dann sollte Autofill greifen.  
-**WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.  
-Das bedeutet für die meisten User dürfte es reichen, sich mehrere Browserprofile anzulegen und die GS ohne das 'Autofill' Addon einzulösen.**
-
-
-Beide Probleme sind ggf. nicht so einfach behebbar.  
-Ein besserer Ansatz wäre wohl ein Greasemonkey Script. Sollte ich mal zu viel Zeit haben, werde ich diese Repo dementsprechend aktualisieren.  
-Die Shop-Crawler Scripte funktionieren weiterhin und die Infos im FAQ unten sind ebenfalls aktuell.
+# Fertige Shoplisten
+Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
+https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
+**Wichtig:**  
+Diese shopliste kann Shops enthalten, die nicht bei allen Wunschgutschein-Varianten verfügbar sind. Dies ist kein Fehler!  
+Die Shops für alle existierenden WG Varianten separat herauszufinden wäre ein sehr hoher Aufwand und man bräuchte aktive Sessions also gültige Gutscheine für jeden WG Typ.  
+Beispiel: Aral/Shell/Esso also Tankstellengutscheine werden zwar gelistet, aber sind eigentlich nur wirklich auswählbar, wenn man einen WG Tankgutschein z.B. von hier kauft:  
+https://geschenkgutscheine.de/products/tankgutschein  
+und:  
+https://app.wunschgutschein.de/mobilitaet  
+Mehr Infos:  
+https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
 
 
 # Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
@@ -46,6 +43,18 @@ Du öffnest die Einlöseseite, gibst deinen Gutscheincode ein und bestätigst da
 Danach wirst du automatisch zur Shopseite weitergeleitet , musst nur noch 1x auf "Weiter" klicken, deine Daten werden automatisch eingetragen und mit einem weiteren Klick wird der Gutschein eingelöst.
 Nach erfolgreicher Einlösung wirst du automatisch zur Einlöseseite weitergeleitet und kannst den nächsten Gutscheincode einlösen.
 
+## WG Einlösen mit den obigen Hilfsmiteln: Bekannte Probleme seit 01-2023
+Durch Änderungen der WG Webseite gibt es derzeit folgende Probleme mit den unten aufgelisteten Addons:  
+Redirector:  
+Der automatische Redirect zum voreingestellten Wunsch-Shop kann dazu führen, dass keine Wertstufe vorausgewählt ist und sich keine auswählen lässt oder eine falsche Wertstufe vorausgewählt ist.  
+Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen Redirects abzuschalten.
+Autofill:  
+Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
+Workaround: Shop-Übersicht nach Eingabe des Gutscheins 1x manuell neuladen und sich zum Ende durchklicken dann sollte Autofill greifen.  
+**WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.  
+Das bedeutet für die meisten User dürfte es reichen, sich mehrere Browserprofile anzulegen und die GS ohne das 'Autofill' Addon einzulösen.**  
+Ein besserer Ansatz wäre ein Greasemonkey Script.
+
 # ShopCrawler - Vollständige Liste aller Einlösepartner crawlen  
 Mit dem ShopCrawler kannst du eine aktuelle Liste aller WG Einlösepartner, einlösbare Wertstufen usw. erstellen lassen.  
 Dieser Vorgang kann mehrere Minuten dauern.
@@ -65,45 +74,8 @@ ShopCrawler.py: error: unrecognized arguments: - help
 Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
 
 
-# Fertige Shoplisten
-Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
-https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
-Achtet aufs Datum im Dateinamen!  
-**Wichtig! Diese shopliste kann Shops enthalten, die nicht bei allen Wunschgutschein-Varianten verfügbar sind. Dies ist kein Fehler!  
-Die Shops für alle existierenden WG Varianten separat herauszufinden wäre ein sehr hoher Aufwand und man bräuchte aktive Sessions also gültige Gutscheine für jeden WG Typ.  
-Beispiel: Aral/Shell/Esso also Tankstellengutscheine werden zwar gelistet, aber sind eigentlich nur wirklich auswählbar, wenn man einen WG Tankgutschein z.B. von hier kauft:  
-https://geschenkgutscheine.de/products/tankgutschein  
-und:  
-https://app.wunschgutschein.de/mobilitaet  
-Mehr Infos:  
-https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
-
-
 # TODOs
 * VoucherHelper aktualisieren (Gutscheincodeformat ohne Bindestrich unterstützen und Erfassung verbessern)
-
-# Relevante WG API Calls
-```
-https://app.wunschgutschein.de/api/shop/11334
-
-https://app.wunschgutschein.de/api/shop/categories/1
-https://app.wunschgutschein.de/api/shop/categories/2
-https://app.wunschgutschein.de/api/shop/categories/3
-
-https://app.wunschgutschein.de/api/redeem/maintenance-status
-
-https://app.wunschgutschein.de/api/shop/wall/1?onlyWithLogo=1
-https://app.wunschgutschein.de/api/shop/wall/1?distribution=ONLINE_DE_PDF&voucherValue=2500&currency=EUR
-
-https://app.wunschgutschein.de/api/redeem/variation/de
-https://app.wunschgutschein.de/api/redeem/variation/at
-
-https://app.wunschgutschein.de/api/redeem/link/<redeemLinkToken>
-
-https://app.wunschgutschein.de/api/redeem/merchantcode
-POST {"redeemLinkToken":"<redeemLinkToken>"}
-
-```
 
 # Bekannte Fehlercodes und deren Bedeutung (direkt nach Gutscheineingabe)
 | Fehlercode        | Text           | Bedeutung  |
@@ -114,7 +86,6 @@ POST {"redeemLinkToken":"<redeemLinkToken>"}
 | VCRx15     |  Es ist ein Fehler aufgetreten. Bitte wenden Sie sich an unseren Kundenservice. (VCRx15)      |   Der Code ist noch nicht aktiv (Sicherheitssperre nach Kauf) -> Am nächsten Tag erneut versuchen |
 | VCRx10     | Text zu lang      |   GS wegen Verlust ersetzt oder wg. Diebstahlschutz gesperrt. |
 | VCRx1     | Bitte achten Sie auf Groß- u. Kleinschreibung...      |   GS ungültig |
-| DUMMY     | DUMMY      |   DUMMY |
 
 # Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung bei Eingabe der persönlichen Daten)
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
@@ -143,9 +114,10 @@ Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de]
 * Manche Shops haben auch komische Wertstufen z.B. Gymondo: 60, 80
 * Manche Shops sind nur in Kategorien auffindbar, aber nicht in der *fake-Kategorie* "keine Kategorie"
 
-# WGs Limits
-* Shoppingkonto: Max. 300€ aufladen pro 24H, **Limit wird immer um 0 Uhr zurückgesetzt!!**
-* Shoppingkonto: Max. 200€ pro 24H auszahlen (Steht in deren AGB unter §6)
-* Shoppingkonto: Max. 24 GS pro Tag und/oder ca. 500€ Aufladung (unbestätigt)
-* Shoppingkonto: Accountsperrung bei zu vielen Einlöse-Fehlversuchen??
-* Shoppingkonto: Sofortige Accountsperre, wenn man versucht, GS mit Fehler "RDXm3" (ganz am Ende) einzulösen (was man ggf. nicht vorher wissen kann daher im Zweifel die "Anonyme Einlösung" verwenden)
+# WGs Limits Shoppingkonto
+* Max. 300€ pro 24H auszahlen (Steht in [deren AGB](https://www.shoppingkonto.de/agb.html) unter §1.3),  **dieses Limit wird immer um 0 Uhr zurückgesetzt!**
+* Accountsperrung bei zu vielen Einlöse-Fehlversuchen??
+* Sofortige Accountsperre, wenn man versucht, GS mit Fehler "RDXm3" (ganz am Ende) einzulösen (was man ggf. nicht vorher wissen kann daher im Zweifel die E-Mail Einlösung verwenden)
+
+# WGs Limits E-Mail Einlösung
+* Max 200 oder 300€ pro Mail pro 24H

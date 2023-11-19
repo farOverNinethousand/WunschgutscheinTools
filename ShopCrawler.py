@@ -141,11 +141,11 @@ class WGCrawler:
         crawledShopsRawNowFromAPI = []
         for wgVoucherTypeId, wgVoucherTypeMap in wgVoucherTypeIdToMoreMapping.items():
             # Get list of basic shop information
-            """ TODO: Umbauen, sodass alle Infos mit einem einzelnen Request von hier geholt werden:
-            https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues
+            """
             Ergebnis variiert je nach Parameter z.B.
             https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
             """
+            # Alter Request siehe nächste Zeile:
             # thisCrawledShopsRawNowFromAPI = callAPI(f'/shop/wall/{wgVoucherTypeId}?extraFields=voucherValues&onlyWithLogo=1&position=T')
             thisCrawledShopsRawNowFromAPI = self.callAPI(f'/shop/wall/{wgVoucherTypeId}?extraFields=voucherValues')
             wgVoucherTypeMap['shops'] = thisCrawledShopsRawNowFromAPI
