@@ -15,8 +15,10 @@ https://app.wunschgutschein.de/mobilitaet
 Mehr Infos:  
 https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
 
+# 18.12.2023: Wunschgutschein speichert die Daten mittlerweile selbst und füllt das Formular automatisch aus, wenn man mehrere Codes einlöst somit kann man statt der unten beschriebenen Methoden auch einfach mehrere Browserprofile (eines pro E-Mail Adresse) verwenden.
 
-# Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
+
+# [Veraltet] Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
 ### Benötigte Browser Addons
 * [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
 * [Autofill](https://chrome.google.com/webstore/detail/autofill/nlmmgnhgdeffjkdckmikfpnddkbbfkkk)
@@ -87,15 +89,17 @@ Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` set
 | VCRx10     | Text zu lang      |   GS wegen Verlust ersetzt oder wg. Diebstahlschutz gesperrt. |
 | VCRx1     | Bitte achten Sie auf Groß- u. Kleinschreibung...      |   GS ungültig |
 
-# Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung bei Eingabe der persönlichen Daten)
+# Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung nach Eingabe der persönlichen Daten)
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
 
-| Fehlercode        | Text           | Bedeutung  |
-| :-------------: |:-------------:| -----:|
-| STDx23      | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt
-| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen
-| RDMx12      | wgs.std.err.occurred (RDMx12) | Unbekannt
-| RDMx5      | RDMx5 | Problem beim Einlösepartner
+| Fehlercode | Text           | Bedeutung  |
+|:----------:|:-------------:| -----:|
+|   STDx23   | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt
+|   RDMx3    | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen
+|   RDMx5    | RDMx5 | Problem beim Einlösepartner
+|   RDMx12   | wgs.std.err.occurred (RDMx12) | Unbekannt. Später erneut versuchen.
+|   RDMx19   | Rdmx19 | Geldwäscheprüfung von WG im Gange. Entweder eine Woche abwarten oder den Support am nächsten Tag kontaktieren.
+
 
 # Bekannte Fehlercodes und deren Bedeutung (ganz am Ende wenn man den Link zum GS bereits per Mail erhalten hat und diesen öffnen will)
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
