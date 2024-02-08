@@ -68,16 +68,46 @@ Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, ka
 ### Mögliche Parameter
 ```
 usage: ShopCrawler.py [-h] [-a ALLOW_UPDATE_SHOPS]
-                      [-c CSV_SKIP_INACTIVE_SHOPS]
-ShopCrawler.py: error: unrecognized arguments: - help
 ```
 
 # Anleitung Shopliste für Wunschgutschein.at (Österreich) erstellen
 Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
+                                                                                          
+# Liste interner WG Variationen
+Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angezeigt werden.
+
+## WG Variationen Deutschland
+
+|       Distribution        | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
+|:-------------------------:|-----------------|:----------------------------------------------------:|--------------------------------------------------------------------------------:|
+|     MEINSHOPPINGKONTO     | 1               |           Alle; Einlösung in Shoppingkonto           | Enthält einige Einträge, die es bei WG normal nicht gibt z.B. REWE, Aral, Shell |
+|       WGSCADOOZ_POR       | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|         ONLINE_DE         | 1               |                    WG Normal Post                    |                                                                     Platzhalter |
+|       ONLINE_DE_PDF       | 1               |                   WG Normal online                   |                                                                     Platzhalter |
+|           Rewe            | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|         Rossmann          | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|         Kaufland          | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+| ONLINE_GG_TANKSTELLEN_PDF | 29              | https://geschenkgutscheine.de/products/tankgutschein |                                                                     Platzhalter |
+|         ALDI_SUED         | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|     LIDL_OHNE_AMAZON      | 1               |                      WG Normal                       |                                                                     Ohne Amazon |
+|          ONLINE           | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|           EDEKA           | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|       WGSAMAZON POR       | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|         REWE_POR          | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|        LEKKERLAND         | 1               |             WG normal an Tankstellen(?)              |                                                                     Platzhalter |
+|           EPAY            | 1               |                          ??                          |                                                                     Platzhalter |
+|        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+|        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+
+## WG Variationen Österreich
+
+|       Distribution        | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
+|:-------------------------:|-----------------|:----------------------------------------------------:|--------------------------------------------------------------------------------:|
+|        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 
 
 # TODOs
-* VoucherHelper aktualisieren (Gutscheincodeformat ohne Bindestrich unterstützen und Erfassung verbessern)
+* Irgendwas ist immer ;)
 
 # Bekannte Fehlercodes und deren Bedeutung (direkt nach Gutscheineingabe)
 | Fehlercode        | Text           | Bedeutung  |
@@ -114,7 +144,6 @@ Manchmal sind die Karten mancher Einlösepartner ausverkauft und deswegen tempor
 Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de](http://shoppingkonto.de/) auflädt und schaut, ob die *fehlenden* Einlösepartner nun verfügbar sind.
 
 # Notizen
-* Mögliche Kartenwerte: 10, 15, 20, 25, 50, 100 (100 ist nur mit Zuzahlung möglich)
 * Manche Shops haben auch komische Wertstufen z.B. Gymondo: 60, 80
 * Manche Shops sind nur in Kategorien auffindbar, aber nicht in der *fake-Kategorie* "keine Kategorie"
 

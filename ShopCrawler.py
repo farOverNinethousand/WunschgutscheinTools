@@ -53,13 +53,13 @@ def saveJson(obj, path):
         json.dump(obj, ofile)
 
 
+SPECIAL_SHOPPINGKONTO_DISTRIBUTION = "MEINSHOPPINGKONTO"
+
+
 class WGCrawler:
     my_parser = argparse.ArgumentParser()
     my_parser.add_argument('-a', '--allow_update_shops',
                            help='Alte shops.json wiederverwenden und nur neue Shops crawlen/hinzufügen. Alte Shop-Daten werden nicht aktualisiert und nicht mehr existente Shops bleiben in der Liste!',
-                           type=bool, default=False)
-    my_parser.add_argument('-c', '--csv_skip_inactive_shops',
-                           help='Als \'inaktiv\' markierte Shops nicht mit in die Liste aufnehmen. Was \'inaktiv\' bedeutet ist noch unklar, daher sollte man diesen Parameter nicht verwenden.',
                            type=bool, default=False)
     args = my_parser.parse_args()
 
@@ -68,26 +68,30 @@ class WGCrawler:
             relevantRedeemableCardValuesEuro = [10, 15, 20, 25, 50, 100]
         self.relevantRedeemableCardValues = relevantRedeemableCardValuesEuro
         self.allow_update_shops = self.args.allow_update_shops
-        self.allow_update_shops = False
-        self.csv_skip_inactive_shops = self.args.csv_skip_inactive_shops  #
+        self.client = httpx.Client()
+        """ Use additionalVariations to add variations which this script cannot auto-detect. """
         if wgAT:
             self.countrycode = 'AT'
             self.domain = 'wunschgutschein.at'
-            self.additionalShopMapping = {
-                2: 'normal'
-            }
+            self.additionalVariations = [dict(name="Normal", voucherCategory=2)
+                                         ]
         else:
             self.countrycode = 'DE'
             self.domain = 'wunschgutschein.de'
-            self.additionalShopMapping = {
-                1: 'normal'
-            }
-            # self.typeMapping = {
-            #     1: 'normal',
-            #     4: 'fashion',
-            #     29: 'tanken',
-            #     30: 'mobilitaet'
-            # }
+            # More see README.md
+            self.additionalVariations = [dict(name="Normal", voucherCategory=1),
+                                         dict(name="Shoppingkonto", voucherCategory=1, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION),
+                                         dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON"),
+                                         dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED"),
+                                         dict(name="Rewe", voucherCategory=1, distribution="Rewe"),
+                                         dict(name="Rossmann", voucherCategory=1, distribution="Rossmann"),
+                                         dict(name="Kaufland", voucherCategory=1, distribution="Kaufland"),
+                                         dict(name="EDEKA", voucherCategory=1, distribution="EDEKA"),
+                                         dict(name="LEKKERLAND", voucherCategory=1, distribution="LEKKERLAND"),
+                                         dict(name="WG_Amazon", voucherCategory=1, distribution="WGSAMAZON POR"),
+                                         # dict(name="EPAY", voucherCategory=1, distribution="EPAY"),
+                                         # dict(name="WG Tanken Test mit Distribution", voucherCategory=29, distribution="ONLINE_GG_TANKSTELLEN_PDF"),
+                                         ]
 
     def getCountryCodeForURL(self) -> str:
         return self.countrycode.lower()
@@ -103,31 +107,28 @@ class WGCrawler:
         canReUseExistingDatabase = os.path.exists(filepathShops) and self.allow_update_shops
         if canReUseExistingDatabase:
             print("Existierende " + filepathShops + " wird verwendet!")
-        # Get list of possible variations
+        # Get list of possible variations e.g.: https://app.wunschgutschein.de/api/redeem/variation/de
         variations = self.callAPI(f'/redeem/variation/{self.getCountryCodeForURL()}')
         if len(variations) == 0:
             # This should never happen
             print("WTF no variations available")
             return
 
-        wgVoucherTypeIdToMoreMapping = {}
+        variationsForCrawler = []
+        # Blacklist für ungewollte distribution Strings
+        distributionsToSkip = ["TESTEintrag"]
         for variation in variations:
-            voucherCategory = variation.get('voucherCategory')
-            if self.additionalShopMapping is not None and voucherCategory in self.additionalShopMapping:
-                wgVoucherTypeIdToMoreMapping[voucherCategory] = {
-                    'path': '',
-                    'urlName': self.additionalShopMapping[voucherCategory]
-                }
-            else:
-                urlName = variation.get('urlName')
-                wgVoucherTypeIdToMoreMapping[voucherCategory] = {
-                    'path': urlName,
-                    'urlName': variation.get('urlName')
-                }
-        if len(wgVoucherTypeIdToMoreMapping) == 0:
-            # TODO: Add whitelist implementation
-            print("Keine crawlbaren Kategorien gefunden -> Möglicherweise zu strikte Whitelist!")
-            return
+            urlName = variation['urlName']
+            distribution = variation.get("distribution")
+            if distribution is not None and distribution in distributionsToSkip:
+                # Typically non-interesting B2B items
+                print(f"Ueberspringe {urlName} basierend auf blacklisted distribution {distribution}")
+                continue
+            variationsForCrawler.append(variation)
+        # Add extra variations
+        for variation in self.additionalVariations:
+            if variation not in variationsForCrawler:
+                variationsForCrawler.append(variation)
 
         # Crawl all shopping categories and make a mapping
         categoriesList = self.callAPI('/shop/categories/1')
@@ -138,25 +139,86 @@ class WGCrawler:
         saveJson(categoriesIdToNameMapping, 'categories.json')
 
         index_wgVoucherTypeIdToUrlNameMapping = 0
-        crawledShopsRawNowFromAPI = []
-        for wgVoucherTypeId, wgVoucherTypeMap in wgVoucherTypeIdToMoreMapping.items():
-            # Get list of basic shop information
-            """
-            Ergebnis variiert je nach Parameter z.B.
-            https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
-            """
-            # Alter Request siehe nächste Zeile:
-            # thisCrawledShopsRawNowFromAPI = callAPI(f'/shop/wall/{wgVoucherTypeId}?extraFields=voucherValues&onlyWithLogo=1&position=T')
-            thisCrawledShopsRawNowFromAPI = self.callAPI(f'/shop/wall/{wgVoucherTypeId}?extraFields=voucherValues')
-            wgVoucherTypeMap['shops'] = thisCrawledShopsRawNowFromAPI
-
-            for shop in thisCrawledShopsRawNowFromAPI:
-                if shop not in crawledShopsRawNowFromAPI:
-                    crawledShopsRawNowFromAPI.append(shop)
+        crawledShopsRawNowFromAPI = []  # List of _all_ shops
+        type_and_distribution_cache = {}
+        ignoreVariationsWithZeroShops = False
+        skippedSpecialShoppingkontoDistribution = None
+        for variation in variationsForCrawler:
             index_wgVoucherTypeIdToUrlNameMapping += 1
+            variationName = variation['name']
+            variationVoucherCategoryID = variation['voucherCategory']
+            variationDistribution = variation.get('distribution')
+            if variationDistribution is not None and variationDistribution == SPECIAL_SHOPPINGKONTO_DISTRIBUTION:
+                print("Skipping Shoppingkonto in order to process it later")
+                skippedSpecialShoppingkontoDistribution = variation
+                continue
+            type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
             print(
-                f'WG Typ Crawler Fortschritt: {index_wgVoucherTypeIdToUrlNameMapping}/{len(wgVoucherTypeIdToMoreMapping)} | Anzahl Shops bisher: {len(crawledShopsRawNowFromAPI)} | ID: {wgVoucherTypeId} | {wgVoucherTypeMap.get("urlName")}')
-        print(f'Gesamtanzahl möglicher Shops: {len(crawledShopsRawNowFromAPI)}')
+                f'Crawle WG Variation Shops: {index_wgVoucherTypeIdToUrlNameMapping}/{len(variationsForCrawler)} | Anzahl Shops bisher: {len(crawledShopsRawNowFromAPI)} | {variationName=} | {variationDistribution=}')
+            thisShopIDs = type_and_distribution_cache.get(type_and_distribution_key)
+            if thisShopIDs is None:
+                """
+                Ergebnis variiert je nach Parameter z.B.
+                https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
+                """
+                # Alternative zusätzliche Parameter: &onlyWithLogo=1&position=T
+                params = dict(extraFields="voucherValues", currency="EUR")
+                if variationDistribution is not None:
+                    params['distribution'] = variationDistribution
+                thisShopsRawNowFromAPI = self.callAPI(f'/shop/wall/{variationVoucherCategoryID}', params=params)
+                if len(thisShopsRawNowFromAPI) == 0 and not ignoreVariationsWithZeroShops:
+                    raise Exception(f"WTF found variation with zero shops: {variationName}")
+
+                thisShopIDs = []
+                for shop in thisShopsRawNowFromAPI:
+                    shopID = shop['id']
+                    thisShopIDs.append(shopID)
+                    foundShop = False
+                    for shopTmp in crawledShopsRawNowFromAPI:
+                        if shopTmp['id'] == shopID:
+                            foundShop = True
+                            break
+                    if not foundShop:
+                        crawledShopsRawNowFromAPI.append(shop)
+                type_and_distribution_cache[type_and_distribution_key] = thisShopIDs
+            print(f"{variationName} -> {len(thisShopIDs)} Shops | Shops gefunden bisher: {len(crawledShopsRawNowFromAPI)}")
+            print('**************************************************')
+
+        print(f'Gesamtanzahl möglicher Shops (ohne Shoppingkonto Shops): {len(crawledShopsRawNowFromAPI)}')
+        if skippedSpecialShoppingkontoDistribution is not None:
+            """ 
+            Herzlicher Undank an WG geht raus, die Shoppingkonto Shops so zu verstecken lol
+            Um an die Shops des Shoppingkontos zu kommen, muss eine Wertstufe angegeben werden, aber dann bekommt man natürlich nur die Shops, die diese Wertstufe bieten.
+            Wir wollen alle Shops, die per Shoppingkonto möglich sind und müssen daher einmal alle Wertstufen durchgehen.
+            """
+            print("Crawle Shoppingkonto Shops")
+            possibleShoppingkontoValuesCentLIST = [1000, 2000, 2500, 5000, 10000]
+            index = 0
+            variationName = skippedSpecialShoppingkontoDistribution['name']
+            variationVoucherCategoryID = skippedSpecialShoppingkontoDistribution['voucherCategory']
+            shoppingkontoShopIDs = []
+            for possibleShoppingkontoValueCent in possibleShoppingkontoValuesCentLIST:
+                index += 1
+                print(f"Crawle Shoppingkonto Shops von Wertstufe {index}/{len(possibleShoppingkontoValuesCentLIST)} | {possibleShoppingkontoValueCent=}")
+                params = dict(extraFields="voucherValues", currency="EUR",
+                              voucherValue=possibleShoppingkontoValueCent, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION)
+                thisShopsRawNowFromAPI = self.callAPI(f'/shop/wall/{variationVoucherCategoryID}', params=params)
+                for shop in thisShopsRawNowFromAPI:
+                    shopID = shop['id']
+                    if shopID not in shoppingkontoShopIDs:
+                        shoppingkontoShopIDs.append(shopID)
+                    foundShop = False
+                    for shopTmp in crawledShopsRawNowFromAPI:
+                        if shopTmp['id'] == shopID:
+                            foundShop = True
+                            break
+                    if not foundShop:
+                        print(f"Special nur Shoppingkonto Shop: {shopID}")
+                        crawledShopsRawNowFromAPI.append(shop)
+            type_and_distribution_key = f"{variationVoucherCategoryID}_{SPECIAL_SHOPPINGKONTO_DISTRIBUTION}"
+            type_and_distribution_cache[type_and_distribution_key] = shoppingkontoShopIDs
+            print(f"{variationName} -> {len(shoppingkontoShopIDs)} Shoppingkonto Shops gefunden")
+        print(f'Gesamtanzahl möglicher Shops (mit Shoppingkonto Shops): {len(crawledShopsRawNowFromAPI)}')
         # Save as json for later offline examination
         saveJson(crawledShopsRawNowFromAPI, filepathShopsRaw)
 
@@ -182,7 +244,7 @@ class WGCrawler:
                     shopIDsToUpdate.append(currentShopID)
                     newShops.append(currentShop)
                     shopIDsNew.append(currentShopID)
-            print("Number of new shops: " + str(len(newShops)))
+            print(f"Number of new shops: {len(newShops)}")
             # Continue with old dataset now that we know which shops need re-crawl
             crawledShopsRawToUse = storedShops + newShops
         else:
@@ -219,15 +281,17 @@ class WGCrawler:
                 if valueInEuro not in self.relevantRedeemableCardValues:
                     otherCardValuesEuro.append(valueInEuro)
             shop['WGCrawler_voucherValuesMisc'] = otherCardValuesEuro
-            thisShopWgTypes = []
-            for wgVoucherTypeMap in wgVoucherTypeIdToMoreMapping.values():
-                thisWgTypeShops = wgVoucherTypeMap['shops']
-                for thisWgTypeShop in thisWgTypeShops:
-                    thisWgTypeShopID = thisWgTypeShop['id']
-                    if thisWgTypeShopID == shop['id']:
-                        thisShopWgTypes.append(wgVoucherTypeMap.get('urlName'))
-                        break
-            shop['WGCrawlerWGTypes'] = thisShopWgTypes
+
+            thisShopWGVariations = []
+            for variation in variationsForCrawler:
+                variationName = variation['name']
+                variationVoucherCategoryID = variation['voucherCategory']
+                variationDistribution = variation.get('distribution')
+                type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
+                variationShopIDList = type_and_distribution_cache[type_and_distribution_key]
+                if shopID in variationShopIDList:
+                    thisShopWGVariations.append(variationName)
+            shop['WG_Variations'] = thisShopWGVariations
             # Check for stop flag
             if debugStopFlag:
                 break
@@ -255,7 +319,6 @@ class WGCrawler:
                         print(f'SHOP_NEW: {newShopID} | {shop["name"]} | {shop.get("link")}')
 
         # Create csv file with most relevant human readable results
-        skippedInactiveShops = []
         with open(filepathShopsCSV, 'w', newline='', encoding="utf-8") as csvfile:
             # TODO: Add column "Beschreibung" but atm this will fuck up our CSV formatting, maybe we need to escape that String before
             fieldnames = ['Shop', 'Beschreibung', 'Einlösebedingungen', 'URL', 'Einlöseurl', 'Kategorien', 'Online', 'OfflineFiliale']
@@ -269,14 +332,11 @@ class WGCrawler:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for shop in shops:
-                if self.csv_skip_inactive_shops and not shop['active']:
-                    skippedInactiveShops.append(shop)
-                    continue
                 redeemWarningsPlain = ''
                 redeemWarnings = shop.get('redeemWarnings', [])
                 for redeemWarning in redeemWarnings:
                     redeemWarningText = redeemWarning['text']
-                    redeemWarningTextSoup = BeautifulSoup(redeemWarningText)
+                    redeemWarningTextSoup = BeautifulSoup(redeemWarningText, features="lxml")
                     # HTML to text
                     redeemWarningsPlain += redeemWarningTextSoup.get_text() + '\n'
                 redeemWarningsPlain = redeemWarningsPlain.strip()
@@ -304,9 +364,9 @@ class WGCrawler:
                 else:
                     columnsDict[key_MiscCardValues] = 'KEINE'
                 # Column "WG Typen"
-                thisShopWgTypes = shop.get('WGCrawlerWGTypes', [])
-                if len(thisShopWgTypes) > 0:
-                    columnsDict[key_WGTypes] = str(thisShopWgTypes)
+                thisShopWGVariations = shop.get('WG_Variations', [])
+                if len(thisShopWGVariations) > 0:
+                    columnsDict[key_WGTypes] = str(thisShopWGVariations)
                 else:
                     columnsDict[key_WGTypes] = 'KEINE ODER ALLE'
 
@@ -314,16 +374,12 @@ class WGCrawler:
                  UnicodeEncodeError: 'charmap' codec can't encode character '\u0308' in position 109: character maps to <undefined>
                  """
                 writer.writerow(columnsDict)
-        if self.csv_skip_inactive_shops:
-            print("Number of skipped inactive shops: " + str(len(skippedInactiveShops)))
-            print("Skipped inactive shops:")
-            print(str(skippedInactiveShops))
         print("Total time required: " + getFormattedPassedTime(timestampStart))
         print(f'DONE, results are were saved in files: {filepathShopsCSV}, {filepathShops} and {filepathShopsRaw}')
 
-    def callAPI(self, path: str, returnJson: bool = True) -> Any:
+    def callAPI(self, path: str, params=None, returnJson: bool = True) -> Any:
         """ Performs API request. """
-        resp = httpx.get(url=f"https://app.{self.domain}/api{path}", headers=basicHeaders, timeout=120)
+        resp = self.client.get(url=f"https://app.{self.domain}/api{path}", params=params, headers=basicHeaders, timeout=120)
         if returnJson:
             return resp.json()
         else:

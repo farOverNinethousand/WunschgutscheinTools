@@ -3,6 +3,8 @@ import sys
 
 import pyclip
 
+""" Alte Klasse, die ich mal für eine kleine Automatisierung genutzt hatte.  """
+
 PATTERN_VOUCHER = "(?:[A-Za-z0-9]{3}-[A-Za-z0-9]{3}-[A-Za-z0-9]{3}|[A-Za-z0-9]{9})"
 
 
