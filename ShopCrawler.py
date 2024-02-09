@@ -70,6 +70,7 @@ class WGCrawler:
         self.allow_update_shops = self.args.allow_update_shops
         self.client = httpx.Client()
         """ Use additionalVariations to add variations which this script cannot auto-detect. """
+        self.additionalVariations = []
         if wgAT:
             self.countrycode = 'AT'
             self.domain = 'wunschgutschein.at'
@@ -79,19 +80,19 @@ class WGCrawler:
             self.countrycode = 'DE'
             self.domain = 'wunschgutschein.de'
             # More see README.md
-            self.additionalVariations = [dict(name="Normal", voucherCategory=1),
-                                         dict(name="Shoppingkonto", voucherCategory=1, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION),
-                                         dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON"),
-                                         dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED"),
-                                         dict(name="Rewe", voucherCategory=1, distribution="Rewe"),
-                                         dict(name="Rossmann", voucherCategory=1, distribution="Rossmann"),
-                                         dict(name="Kaufland", voucherCategory=1, distribution="Kaufland"),
-                                         dict(name="EDEKA", voucherCategory=1, distribution="EDEKA"),
-                                         dict(name="LEKKERLAND", voucherCategory=1, distribution="LEKKERLAND"),
-                                         dict(name="WG_Amazon", voucherCategory=1, distribution="WGSAMAZON POR"),
-                                         # dict(name="EPAY", voucherCategory=1, distribution="EPAY"),
-                                         # dict(name="WG Tanken Test mit Distribution", voucherCategory=29, distribution="ONLINE_GG_TANKSTELLEN_PDF"),
-                                         ]
+            self.additionalVariations = [  # dict(name="Normal", voucherCategory=1),
+                dict(name="Shoppingkonto", voucherCategory=1, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION),
+                dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON"),
+                dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED"),
+                dict(name="Rewe", voucherCategory=1, distribution="Rewe"),
+                dict(name="Rossmann", voucherCategory=1, distribution="Rossmann"),
+                dict(name="Kaufland", voucherCategory=1, distribution="Kaufland"),
+                dict(name="EDEKA", voucherCategory=1, distribution="EDEKA"),
+                dict(name="LEKKERLAND", voucherCategory=1, distribution="LEKKERLAND"),
+                dict(name="WG_Amazon", voucherCategory=1, distribution="WGSAMAZON POR"),
+                # dict(name="EPAY", voucherCategory=1, distribution="EPAY"),
+                # dict(name="WG Tanken Test mit Distribution", voucherCategory=29, distribution="ONLINE_GG_TANKSTELLEN_PDF"),
+            ]
 
     def getCountryCodeForURL(self) -> str:
         return self.countrycode.lower()
@@ -137,14 +138,16 @@ class WGCrawler:
             categoriesIdToNameMapping.setdefault(category['id'], category)
         # Save categories mapping as json file
         saveJson(categoriesIdToNameMapping, 'categories.json')
-
-        index_wgVoucherTypeIdToUrlNameMapping = 0
-        crawledShopsRawNowFromAPI = []  # List of _all_ shops
-        type_and_distribution_cache = {}
+        # Crawl shops for all variations
+        variationIndex = 0
+        allShopsRawNowFromAPI = []  # List of _all_ shops
+        variationsUnique = []  # Variations with unique collections of shops
+        variationsDuplicated = []  # Variations with collections of shops which also other variations have
+        shops_voucher_type_and_distribution = {}
         ignoreVariationsWithZeroShops = False
         skippedSpecialShoppingkontoDistribution = None
         for variation in variationsForCrawler:
-            index_wgVoucherTypeIdToUrlNameMapping += 1
+            variationIndex += 1
             variationName = variation['name']
             variationVoucherCategoryID = variation['voucherCategory']
             variationDistribution = variation.get('distribution')
@@ -154,8 +157,8 @@ class WGCrawler:
                 continue
             type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
             print(
-                f'Crawle WG Variation Shops: {index_wgVoucherTypeIdToUrlNameMapping}/{len(variationsForCrawler)} | Anzahl Shops bisher: {len(crawledShopsRawNowFromAPI)} | {variationName=} | {variationDistribution=}')
-            thisShopIDs = type_and_distribution_cache.get(type_and_distribution_key)
+                f'Crawle WG Variation Shops: {variationIndex}/{len(variationsForCrawler)} | Anzahl Shops bisher: {len(allShopsRawNowFromAPI)} | {variationName=} | {variationDistribution=}')
+            thisShopIDs = shops_voucher_type_and_distribution.get(type_and_distribution_key)
             if thisShopIDs is None:
                 """
                 Ergebnis variiert je nach Parameter z.B.
@@ -174,17 +177,27 @@ class WGCrawler:
                     shopID = shop['id']
                     thisShopIDs.append(shopID)
                     foundShop = False
-                    for shopTmp in crawledShopsRawNowFromAPI:
+                    for shopTmp in allShopsRawNowFromAPI:
                         if shopTmp['id'] == shopID:
                             foundShop = True
                             break
                     if not foundShop:
-                        crawledShopsRawNowFromAPI.append(shop)
-                type_and_distribution_cache[type_and_distribution_key] = thisShopIDs
-            print(f"{variationName} -> {len(thisShopIDs)} Shops | Shops gefunden bisher: {len(crawledShopsRawNowFromAPI)}")
+                        allShopsRawNowFromAPI.append(shop)
+                # Check if this collection of shops is unique
+                listOfVariationShopLists = list(shops_voucher_type_and_distribution.values())
+                if thisShopIDs in listOfVariationShopLists:
+                    variationsDuplicated.append(variation)
+                else:
+                    variationsUnique.append(variation)
+                shops_voucher_type_and_distribution[type_and_distribution_key] = thisShopIDs
+            else:
+                variationsDuplicated.append(variation)
+            print(f"{variationName} -> {len(thisShopIDs)} Shops | Shops gefunden bisher: {len(allShopsRawNowFromAPI)}")
             print('**************************************************')
 
-        print(f'Gesamtanzahl möglicher Shops (ohne Shoppingkonto Shops): {len(crawledShopsRawNowFromAPI)}')
+        print(f'Gesamtanzahl möglicher Shops (ohne Shoppingkonto Shops): {len(allShopsRawNowFromAPI)}')
+        if self.countrycode == 'DE':
+            pass
         if skippedSpecialShoppingkontoDistribution is not None:
             """ 
             Herzlicher Undank an WG geht raus, die Shoppingkonto Shops so zu verstecken lol
@@ -208,19 +221,19 @@ class WGCrawler:
                     if shopID not in shoppingkontoShopIDs:
                         shoppingkontoShopIDs.append(shopID)
                     foundShop = False
-                    for shopTmp in crawledShopsRawNowFromAPI:
+                    for shopTmp in allShopsRawNowFromAPI:
                         if shopTmp['id'] == shopID:
                             foundShop = True
                             break
                     if not foundShop:
                         print(f"Special nur Shoppingkonto Shop: {shopID}")
-                        crawledShopsRawNowFromAPI.append(shop)
+                        allShopsRawNowFromAPI.append(shop)
             type_and_distribution_key = f"{variationVoucherCategoryID}_{SPECIAL_SHOPPINGKONTO_DISTRIBUTION}"
-            type_and_distribution_cache[type_and_distribution_key] = shoppingkontoShopIDs
+            shops_voucher_type_and_distribution[type_and_distribution_key] = shoppingkontoShopIDs
             print(f"{variationName} -> {len(shoppingkontoShopIDs)} Shoppingkonto Shops gefunden")
-        print(f'Gesamtanzahl möglicher Shops (mit Shoppingkonto Shops): {len(crawledShopsRawNowFromAPI)}')
+        print(f'Gesamtanzahl möglicher Shops (mit Shoppingkonto Shops): {len(allShopsRawNowFromAPI)}')
         # Save as json for later offline examination
-        saveJson(crawledShopsRawNowFromAPI, filepathShopsRaw)
+        saveJson(allShopsRawNowFromAPI, filepathShopsRaw)
 
         shopIDsToUpdate = []
         shopIDsNew = []
@@ -231,7 +244,7 @@ class WGCrawler:
             with open(os.path.join(os.getcwd(), filepathShops), encoding='utf-8') as infile:
                 storedShops = json.load(infile)
             newShops = []
-            for currentShop in crawledShopsRawNowFromAPI:
+            for currentShop in allShopsRawNowFromAPI:
                 currentShopID = currentShop['id']
                 foundShop = False
                 for storedShop in storedShops:
@@ -249,7 +262,7 @@ class WGCrawler:
             crawledShopsRawToUse = storedShops + newShops
         else:
             # Add all shopIDs to list so we will update data of all shops
-            crawledShopsRawToUse = crawledShopsRawNowFromAPI.copy()
+            crawledShopsRawToUse = allShopsRawNowFromAPI.copy()
             for shopRaw in crawledShopsRawToUse:
                 shopIDsToUpdate.append(shopRaw['id'])
 
@@ -288,10 +301,20 @@ class WGCrawler:
                 variationVoucherCategoryID = variation['voucherCategory']
                 variationDistribution = variation.get('distribution')
                 type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
-                variationShopIDList = type_and_distribution_cache[type_and_distribution_key]
+                variationShopIDList = shops_voucher_type_and_distribution[type_and_distribution_key]
                 if shopID in variationShopIDList:
                     thisShopWGVariations.append(variationName)
             shop['WG_Variations'] = thisShopWGVariations
+            thisShopWGVariationsUnique = []
+            for variation in variationsUnique:
+                variationName = variation['name']
+                variationVoucherCategoryID = variation['voucherCategory']
+                variationDistribution = variation.get('distribution')
+                type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
+                variationShopIDList = shops_voucher_type_and_distribution[type_and_distribution_key]
+                if shopID in variationShopIDList:
+                    thisShopWGVariationsUnique.append(variationName)
+            shop['WG_Variations_unique'] = thisShopWGVariations
             # Check for stop flag
             if debugStopFlag:
                 break
@@ -300,11 +323,11 @@ class WGCrawler:
         # Save shop information as json file
         saveJson(shops, filepathShops)
 
-        # Look for deleted shops and print info - Only possible if we got data from previous crawl process
+        # Look for changes and print info - Only possible if we got data from previous crawl process
         for oldShop in storedShops:
             foundShop = False
             oldShopID = oldShop['id']
-            for shop in crawledShopsRawNowFromAPI:
+            for shop in allShopsRawNowFromAPI:
                 if shop['id'] == oldShopID:
                     foundShop = True
                     break
@@ -320,13 +343,12 @@ class WGCrawler:
 
         # Create csv file with most relevant human readable results
         with open(filepathShopsCSV, 'w', newline='', encoding="utf-8") as csvfile:
-            # TODO: Add column "Beschreibung" but atm this will fuck up our CSV formatting, maybe we need to escape that String before
             fieldnames = ['Shop', 'Beschreibung', 'Einlösebedingungen', 'URL', 'Einlöseurl', 'Kategorien', 'Online', 'OfflineFiliale']
             # Add one column for each possible card value
             for possibleCardValueEuros in self.relevantRedeemableCardValues:
                 fieldnames.append("Kartenwert " + str(possibleCardValueEuros) + "€")
             key_MiscCardValues = "Sonstige Kartenwerte"
-            key_WGTypes = "Verfuegbar in WG Typ"
+            key_WGTypes = "Verfügbar in unique WG Variationen"
             fieldnames.append(key_MiscCardValues)
             fieldnames.append(key_WGTypes)
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -364,7 +386,7 @@ class WGCrawler:
                 else:
                     columnsDict[key_MiscCardValues] = 'KEINE'
                 # Column "WG Typen"
-                thisShopWGVariations = shop.get('WG_Variations', [])
+                thisShopWGVariations = shop.get('WG_Variations_unique', [])
                 if len(thisShopWGVariations) > 0:
                     columnsDict[key_WGTypes] = str(thisShopWGVariations)
                 else:

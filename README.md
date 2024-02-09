@@ -74,7 +74,9 @@ usage: ShopCrawler.py [-h] [-a ALLOW_UPDATE_SHOPS]
 Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
                                                                                           
 # Liste interner WG Variationen
-Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angezeigt werden.
+Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angezeigt werden.  
+09.02.2024: Ich habe die Variation "normal" entfernt, da das Wording so nicht stimmt. Es gibt die nennen wir sie mal "mainstream" WG Typen, die allesamt dieselben Shops bieten.  
+Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE, ALDI_SUED und einige mehr.
 
 ## WG Variationen Deutschland
 
@@ -89,21 +91,22 @@ Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angeze
 |         Kaufland          | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 | ONLINE_GG_TANKSTELLEN_PDF | 29              | https://geschenkgutscheine.de/products/tankgutschein |                                                                     Platzhalter |
 |         ALDI_SUED         | 1               |                     Platzhalter                      |                                                                     Platzhalter |
-|     LIDL_OHNE_AMAZON      | 1               |                      WG Normal                       |                                                                     Ohne Amazon |
+|     LIDL_OHNE_AMAZON      | 1               |                    WG Normal Lidl                    |                                                                     Ohne Amazon |
 |          ONLINE           | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 |           EDEKA           | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 |       WGSAMAZON POR       | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 |         REWE_POR          | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 |        LEKKERLAND         | 1               |             WG normal an Tankstellen(?)              |                                                                     Platzhalter |
-|           EPAY            | 1               |                          ??                          |                                                                     Platzhalter |
+|           EPAY            | 1               |        ?? Evtl WG online von REWE, Penny usw         |                                                                     Platzhalter |
 |        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 |        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 
 ## WG Variationen Österreich
 
-|       Distribution        | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
-|:-------------------------:|-----------------|:----------------------------------------------------:|--------------------------------------------------------------------------------:|
-|        Platzhalter        | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+| Distribution | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
+|:------------:|-----------------|:----------------------------------------------------:|--------------------------------------------------------------------------------:|
+|    Normal    | 2               |                     Platzhalter                      |                                                                     Platzhalter |
+| Platzhalter  | 1               |                     Platzhalter                      |                                                                     Platzhalter |
 
 
 # TODOs
