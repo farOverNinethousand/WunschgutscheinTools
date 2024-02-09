@@ -110,6 +110,7 @@ Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE,
 
 
 # TODOs
+* Shoppingkonto Standardwertstufen im Crawler prüfen und ggf. aktualisieren
 * Irgendwas ist immer ;)
 
 # Bekannte Fehlercodes und deren Bedeutung (direkt nach Gutscheineingabe)
