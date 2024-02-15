@@ -82,14 +82,14 @@ class WGCrawler:
             # More see README.md
             self.additionalVariations = [  # dict(name="Normal", voucherCategory=1),
                 dict(name="Shoppingkonto", voucherCategory=1, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION),
-                dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON"),
-                dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED"),
-                dict(name="Rewe", voucherCategory=1, distribution="Rewe"),
-                dict(name="Rossmann", voucherCategory=1, distribution="Rossmann"),
-                dict(name="Kaufland", voucherCategory=1, distribution="Kaufland"),
-                dict(name="EDEKA", voucherCategory=1, distribution="EDEKA"),
+                dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON", name_for_table="FILIALE_LI_DL_OHNE_AMA_ZON"),
+                dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED", name_for_table="FILIALE_AL_DI_SUED"),
+                dict(name="Rewe", voucherCategory=1, distribution="Rewe", name_for_table="FILIALE_LI_DL_OHNE_AMA_ZON"),
+                dict(name="Rossmann", voucherCategory=1, distribution="Rossmann", name_for_table="FILIALE_ROSS_MANN"),
+                dict(name="Kaufland", voucherCategory=1, distribution="Kaufland", name_for_table="FILIALE_KAUF_LAND"),
+                dict(name="EDEKA", voucherCategory=1, distribution="EDEKA", name_for_table="FILIALE_EDE_KA"),
                 dict(name="LEKKERLAND", voucherCategory=1, distribution="LEKKERLAND"),
-                dict(name="WG_Amazon", voucherCategory=1, distribution="WGSAMAZON POR"),
+                dict(name="WG_Amazon", voucherCategory=1, distribution="WGSAMAZON POR", name_for_table="TABLE_WG_AMA_ZON"),
                 # dict(name="EPAY", voucherCategory=1, distribution="EPAY"),
                 # dict(name="WG Tanken Test mit Distribution", voucherCategory=29, distribution="ONLINE_GG_TANKSTELLEN_PDF"),
             ]
@@ -305,7 +305,7 @@ class WGCrawler:
                 if shopID in variationShopIDList:
                     thisShopWGVariations.append(variationName)
             shop['WG_Variations'] = thisShopWGVariations
-            thisShopWGVariationsUnique = []
+            thisShopWGVariationsForTable = []
             for variation in variationsUnique:
                 variationName = variation['name']
                 variationVoucherCategoryID = variation['voucherCategory']
@@ -313,8 +313,9 @@ class WGCrawler:
                 type_and_distribution_key = f"{variationVoucherCategoryID}_{variationDistribution}"
                 variationShopIDList = shops_voucher_type_and_distribution[type_and_distribution_key]
                 if shopID in variationShopIDList:
-                    thisShopWGVariationsUnique.append(variationName)
-            shop['WG_Variations_unique'] = thisShopWGVariations
+                    variationNameForTable = variation.get('name_for_table', variationName)
+                    thisShopWGVariationsForTable.append(variationNameForTable)
+            shop['WG_Variations_table'] = thisShopWGVariationsForTable
             # Check for stop flag
             if debugStopFlag:
                 break
@@ -346,8 +347,8 @@ class WGCrawler:
             fieldnames = ['Shop', 'Beschreibung', 'Einlösebedingungen', 'URL', 'Einlöseurl', 'Kategorien', 'Online', 'OfflineFiliale']
             # Add one column for each possible card value
             for possibleCardValueEuros in self.relevantRedeemableCardValues:
-                fieldnames.append("Kartenwert " + str(possibleCardValueEuros) + "€")
-            key_MiscCardValues = "Sonstige Kartenwerte"
+                fieldnames.append("Wertstufe " + str(possibleCardValueEuros) + "€")
+            key_MiscCardValues = "Sonstige Wertstufen"
             key_WGTypes = "Verfügbar in unique WG Variationen"
             fieldnames.append(key_MiscCardValues)
             fieldnames.append(key_WGTypes)
@@ -372,21 +373,19 @@ class WGCrawler:
                                # TODO: Using "booleanToExcel" for "OfflineFiliale" will break our CSVs column headers? -.-
                                }
                 # Polish some data for our CSV
-                # Column "Sonstige Kartenwerte"
+                # Column "Sonstige Wertstufe"
                 for possibleCardValue in self.relevantRedeemableCardValues:
                     if isCardValuePossible(shop, possibleCardValue):
-                        # columnsDict["Kartenwert " + str(possibleCardValue)] = True
-                        columnsDict["Kartenwert " + str(possibleCardValue) + "€"] = booleanToExcel(True)
+                        columnsDict["Wertstufe " + str(possibleCardValue) + "€"] = booleanToExcel(True)
                     else:
-                        # columnsDict["Kartenwert " + str(possibleCardValue)] = False
-                        columnsDict["Kartenwert " + str(possibleCardValue) + "€"] = booleanToExcel(False)
+                        columnsDict["Wertstufe " + str(possibleCardValue) + "€"] = booleanToExcel(False)
                 otherCardValuesEuro = shop.get('WGCrawler_voucherValuesMisc', [])
                 if len(otherCardValuesEuro) > 0:
                     columnsDict[key_MiscCardValues] = str(otherCardValuesEuro)
                 else:
                     columnsDict[key_MiscCardValues] = 'KEINE'
                 # Column "WG Typen"
-                thisShopWGVariations = shop.get('WG_Variations_unique', [])
+                thisShopWGVariations = shop.get('WG_Variations_table', [])
                 if len(thisShopWGVariations) > 0:
                     columnsDict[key_WGTypes] = str(thisShopWGVariations)
                 else:
