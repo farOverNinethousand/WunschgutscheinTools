@@ -128,7 +128,8 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 
 | Fehlercode | Text           | Bedeutung  |
 |:----------:|:-------------:| -----:|
-|   STDx23   | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt
+|   STDx6   | Invalid token passed | Session Fehler; erneut versuchen
+|   STDx23   | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt/temporärer Fehler
 |   RDMx3    | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen
 |   RDMx5    | RDMx5 | Problem beim Einlösepartner
 |   RDMx12   | wgs.std.err.occurred (RDMx12) | Unbekannt. Später erneut versuchen.
