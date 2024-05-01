@@ -117,7 +117,7 @@ class WGCrawler:
 
         variationsForCrawler = []
         # Blacklist für ungewollte distribution Strings
-        distributionsToSkip = ["TESTEintrag"]
+        distributionsToSkip = ["TEST_Distribution_Eintrag_der_uebersprungen_werden_soll"]
         for variation in variations:
             urlName = variation['urlName']
             distribution = variation.get("distribution")
@@ -319,11 +319,8 @@ class WGCrawler:
             # Check for stop flag
             if debugStopFlag:
                 break
-        shops = crawledShopsRawToUse
-
         # Save shop information as json file
-        saveJson(shops, filepathShops)
-
+        saveJson(crawledShopsRawToUse, filepathShops)
         # Look for changes and print info - Only possible if we got data from previous crawl process
         for oldShop in storedShops:
             foundShop = False
@@ -337,7 +334,7 @@ class WGCrawler:
         # Print info about new shops
         if len(shopIDsNew) > 0:
             for newShopID in shopIDsNew:
-                for shop in shops:
+                for shop in crawledShopsRawToUse:
                     shopID = shop['id']
                     if shopID == newShopID:
                         print(f'SHOP_NEW: {newShopID} | {shop["name"]} | {shop.get("link")}')
@@ -354,7 +351,7 @@ class WGCrawler:
             fieldnames.append(key_WGTypes)
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-            for shop in shops:
+            for shop in crawledShopsRawToUse:
                 redeemWarningsPlain = ''
                 redeemWarnings = shop.get('redeemWarnings', [])
                 for redeemWarning in redeemWarnings:
