@@ -6,14 +6,9 @@ Wunschgutschein und shoppingkonto.de/.at Guthaben teil-automatisiert einlösen u
 Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
 https://mega.nz/folder/HehC1JyK#v5R3VoyOGnoIU6dHKU1vIg  
 **Wichtig:**  
-Diese shopliste kann Shops enthalten, die nicht bei allen Wunschgutschein-Varianten verfügbar sind. Dies ist kein Fehler!  
-Die Shops für alle existierenden WG Varianten separat herauszufinden wäre ein sehr hoher Aufwand und man bräuchte aktive Sessions also gültige Gutscheine für jeden WG Typ.  
-Beispiel: Aral/Shell/Esso also Tankstellengutscheine werden zwar gelistet, aber sind eigentlich nur wirklich auswählbar, wenn man einen WG Tankgutschein z.B. von hier kauft:  
-https://geschenkgutscheine.de/products/tankgutschein  
-und:  
-https://app.wunschgutschein.de/mobilitaet  
-Mehr Infos:  
-https://www.mydealz.de/diskussion/wunschgutschein-in-shell-geht-nicht-1707965**
+Diese Shopliste enthält auch Shops, die nicht bei allen Wunschgutschein-Varianten verfügbar sind also nur weil irgendwo *Aral* oder *ESSO* steht bedeutet dies nicht, dass man mit normalen Wunschgutscheinen direkt an Tankgutscheine kommt!  
+Beachtet die Spalte "*Verfügbar in unique WG Variationen*"!!  
+Die klassischen WG Tankgutscheine gibt es nur unter [geschenkgutscheine.de/products/tankgutschein](https://geschenkgutscheine.de/products/tankgutschein).
 
 # 18.12.2023: Wunschgutschein speichert die Daten mittlerweile selbst und füllt das Formular automatisch aus, wenn man mehrere Codes einlöst somit kann man statt der unten beschriebenen Methoden auch einfach mehrere Browserprofile (eines pro E-Mail Adresse) verwenden.
 
