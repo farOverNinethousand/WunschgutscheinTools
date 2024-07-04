@@ -108,7 +108,7 @@ class WGCrawler:
         canReUseExistingDatabase = os.path.exists(filepathShops) and self.allow_update_shops
         if canReUseExistingDatabase:
             print("Existierende " + filepathShops + " wird verwendet!")
-        # Get list of possible variations e.g.: https://app.wunschgutschein.de/api/redeem/variation/de
+        # Get list of possible variations e.g.: https://app.wunschgutschein.de/api/v2/redeem/variation/de
         variations = self.callAPI(f'/redeem/variation/{self.getCountryCodeForURL()}')
         if len(variations) == 0:
             # This should never happen
@@ -162,7 +162,7 @@ class WGCrawler:
             if thisShopIDs is None:
                 """
                 Ergebnis variiert je nach Parameter z.B.
-                https://app.wunschgutschein.de/api/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
+                https://app.wunschgutschein.de/api/v2/shop/wall/1?extraFields=voucherValues&onlyWithLogo=1&position=T
                 """
                 # Alternative zusätzliche Parameter: &onlyWithLogo=1&position=T
                 params = dict(extraFields="voucherValues", currency="EUR")
@@ -397,7 +397,7 @@ class WGCrawler:
 
     def callAPI(self, path: str, params=None, returnJson: bool = True) -> Any:
         """ Performs API request. """
-        resp = self.client.get(url=f"https://app.{self.domain}/api{path}", params=params, headers=basicHeaders, timeout=120)
+        resp = self.client.get(url=f"https://app.{self.domain}/api/v2{path}", params=params, headers=basicHeaders, timeout=120)
         if returnJson:
             return resp.json()
         else:
