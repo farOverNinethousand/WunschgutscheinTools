@@ -122,7 +122,7 @@ Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE,
 |   VCRx49   |                                                                                                                              'Voucher not yet ready'                                                                                                                              |                                                                                                                                                                                          Abwarten bis GS aktiviert wird. |
 
 
-# Bekannte Fehlercodes und deren Bedeutung (am Ende der 'anonymen' Einlösung nach Eingabe der persönlichen Daten)
+# Bekannte Fehlercodes und deren Bedeutung am Ende der 'anonymen' Einlösung nach Eingabe der persönlichen Daten
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
 
 | Fehlercode | Text           | Bedeutung  |
@@ -134,13 +134,19 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 |   RDMx12   | wgs.std.err.occurred (RDMx12) | Unbekannt. Später erneut versuchen.
 
 
-# Bekannte Fehlercodes und deren Bedeutung (ganz am Ende wenn man den Link zum GS bereits per Mail erhalten hat und diesen öffnen will)
+# Bekannte Fehlercodes und deren Bedeutung ganz am Ende wenn man den Link zum GS bereits per Mail erhalten hat und diesen öffnen will
 Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden bei einer versuchten Einlösung des GS auf einen Shoppingkonto Accounts meist sofort zu einer temporären Sperre führen!
 
 | Fehlercode        | Text           | Bedeutung  |
 | :-------------: |:-------------:| -----:|
 | RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Zu viele GS in kurzer Zeit eingelöst -> Abwarten und es einige Tage später erneut versuchen oder den Support kontaktieren. Kann auch als Vorstufe von RDMx19 erscheinen.
 |   RDMx19   | Rdmx19 | Geldwäscheprüfung von WG im Gange. Entweder eine Woche abwarten oder den Support am nächsten Tag kontaktieren.
+
+# Bekannte Fehlercodes und deren Bedeutung nach erfolgreicher Einlösung, wenn die E-Mail mit dem GS nicht kommt und man versucht, sich den GS erneut zuschicken zu lassen
+| Fehlercode        | Text           | Bedeutung  |
+| :-------------: |:-------------:| -----:|
+|   STDx2   | STDx2 | Geldwäscheprüfung von WG im Gange. Entweder eine Woche abwarten oder den Support am nächsten Tag kontaktieren. Solche GS lassen sich bis zur Freischaltung vom Support nicht erneut zuschicken.
+
 
 # FAQ
 **Ich kann bestimmte Einlösepartner z.B. Kaufland nicht auswählen, woran liegt das und was kann ich tun?**  
