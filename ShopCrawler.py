@@ -83,6 +83,8 @@ class WGCrawler:
             self.additionalVariations = [  # dict(name="Normal", voucherCategory=1),
                 dict(name="Shoppingkonto", voucherCategory=1, distribution=SPECIAL_SHOPPINGKONTO_DISTRIBUTION),
                 dict(name="LIDL_OHNE_AMAZON", voucherCategory=1, distribution="LIDL_OHNE_AMAZON", name_for_table="FILIALE_LI_DL_OHNE_AMA_ZON"),
+
+                dict(name="Penny ohne Kaufland", voucherCategory=1, distribution="PENNY_PROMO", name_for_table="FILIALE_P_E_N_N_Y_PROMO"),
                 dict(name="ALDI_SUED", voucherCategory=1, distribution="ALDI_SUED", name_for_table="FILIALE_AL_DI_SUED"),
                 dict(name="Rewe", voucherCategory=1, distribution="Rewe", name_for_table="RE_WE"),
                 dict(name="Rossmann", voucherCategory=1, distribution="Rossmann", name_for_table="FILIALE_ROSS_MANN"),
