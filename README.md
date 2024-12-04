@@ -135,7 +135,7 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 |:----------:|:-------------:| -----:|
 |   STDx6   | Invalid token passed | Session Fehler; erneut versuchen
 |   STDx23   | Es ist ein Fehler aufgetreten (STDx23) | Unbekannt/temporärer Fehler
-|   RDMx3    | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen.  Die georderten GS lassen sich erst öffnen, sobald der WG Support die Geldwäscheprüfung abgeschlossen hat.
+|   RDMx3    | Es ist ein Fehler aufgetreten (RDMx3) | Verursacht instant Accountsperre, würde man diesen GS versuchen auf ein Shoppingkonto aufzuladen. Am nächsten Werktag erneut versuchen.
 |   RDMx5    | RDMx5 | Problem beim Einlösepartner
 |   RDMx12   | wgs.std.err.occurred (RDMx12) | Unbekannt. Später erneut versuchen.
 
@@ -145,7 +145,7 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 
 | Fehlercode        | Text           | Bedeutung  |
 | :-------------: |:-------------:| -----:|
-| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Zu viele GS in kurzer Zeit eingelöst -> Abwarten und es einige Tage später erneut versuchen oder den Support kontaktieren. Kann auch als Vorstufe von RDMx19 erscheinen.
+| RDMx3      | Es ist ein Fehler aufgetreten (RDMx3) | Zu viele GS in kurzer Zeit eingelöst, ggf Geldwäscheprüfung -> Abwarten und es einige Tage später erneut versuchen oder den Support kontaktieren. Kann auch als Vorstufe von RDMx19 erscheinen.
 |   RDMx19   | Rdmx19 | Geldwäscheprüfung von WG im Gange. Entweder eine Woche abwarten oder den Support am nächsten Tag kontaktieren.
 
 # Bekannte Fehlercodes und deren Bedeutung nach erfolgreicher Einlösung, wenn die E-Mail mit dem GS nicht kommt und man versucht, sich den GS erneut zuschicken zu lassen
