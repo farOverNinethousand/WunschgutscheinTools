@@ -101,6 +101,54 @@ Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE,
 |        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
 
 
+## Weitere WG Distribution Werte als lazy Tabelle
+```
+ONLINE_DE_PDF
+REWE
+ONLINE_DE
+EDEKA
+WGSAMAZON POR
+ALDI_SUED
+LEKKERLAND
+Rossmann
+LIDL_OHNE_AMAZON
+ONLINE_GG_TANKSTELLEN_PDF
+Kaufland
+WGSCADOOZ_POR
+LIDL
+REWE_POR
+EPAY
+Toom
+ONLINE_GG_TANKSTELLEN
+ONLINE_LIGHT_DE_PDF
+NORMA POR
+Eni/Mpreis
+ONLINE_AT_PDF
+PDF_OHNE_AMAZON
+TIBIDONO AT
+PENNY_PROMO
+Valora DE
+HOFER_AT
+WGSAMAZON POSA
+B2B
+ONLINE_LIGHT_DE
+MSH
+AUFLADEGUTSCHEINESTARTGUTHABENABLAUFDATUM
+ONLINE
+NKD_DE
+ONLINE_PREMIUM_DE_PDF
+EDEKA_ICP
+KIOSK
+Lidl AT
+KULANZ_POR_DE
+REWEPENNYBONUS_POR
+TRINKGUT
+PDF
+EURONICS
+DM
+ONLINE_B2B_DE_PDF
+```
+
 ## WG Variationen Österreich
 
 | Distribution | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
