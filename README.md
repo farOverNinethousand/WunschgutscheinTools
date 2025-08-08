@@ -147,6 +147,7 @@ PDF
 EURONICS
 DM
 ONLINE_B2B_DE_PDF
+RESERVE
 ```
 
 ## WG Variationen Österreich
@@ -211,6 +212,23 @@ Fehler, die erst ganz am Ende des Einlösevorgangs auftreten würden, würden be
 Manchmal sind die Karten mancher Einlösepartner ausverkauft und deswegen temporär nicht verfügbar oder ein Einlösepartner ist plötzlich keiner mehr (schlimmster Fall), aber in den meisten Fällen greifen seltsame Einschränkungen für Gutscheine aus bestimmten Quellen z.B. kann man auf Amazon gekaufte WGs nicht in Kaufland umwandeln (Stand 21.04.2022).  
 Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de](http://shoppingkonto.de/) auflädt und schaut, ob die *fehlenden* Einlösepartner nun verfügbar sind.
 
+**Die E-Mail mit dem Gutschein kommt nicht an, was kann ich tun?**  
+Dafür gibt es zwei mögliche Hauptgründe:  
+* Die Einlösung ist gesperrt / Geldwäscheprüfung
+* Ein Bug seitens Wunschgutschein, der bei ca 8% aller Einlösungen auftritt -> Hier kann nur der Support helfen
+* Probleme mit deiner E-Mail Adresse: Das kannst du ausschließen, indem du dir von einer anderen E-Mail Adresse selbst eine E-Mail schickst.  
+
+Das Problem tritt laut MyDealz Community immer wieder auf ([Beispiel](https://www.mydealz.de/deals/rewe-kartenwelt-5-extra-zum-wunschgutschein-online-offline-2614175#reply-53940569)).
+
+Herausfinden, woran es liegt:  
+1. Code neu zusenden lassen.
+2. Falls der Code nicht kommt: [Support kontaktieren](https://wunschgutschein.de/kontakt).  
+Einige Minuten nachdem du dem WG Support geschrieben hast, solltest du eine automatisierte E-Mail Antwort mit einer Ticketnummer bekommen.  
+Falls die nicht kommt, gibt es eventuell Probleme mit deiner E-Mail Adresse.
+3. Falls du weitere WG hast und wissen möchtest, ob es sich um eine Sperre oder einen WG Bug handelt, löse einen weiteren Gutschein auf dieselbe E-Mail Adresse ein.  
+Wenn der GS ankommt: WG Bug  
+Wenn der GS nicht ankommt: Sperre/Geldwäscheprüfung
+
 # Notizen
 * Manche Shops haben auch komische Wertstufen z.B. Gymondo: 60, 80
 * Manche Shops sind nur in Kategorien auffindbar, aber nicht in der *fake-Kategorie* "keine Kategorie"
@@ -222,3 +240,16 @@ Das lässt sich prüfen/umgehen, indem man die Gutscheine auf [Shoppingkonto.de]
 
 # WGs Limits E-Mail Einlösung
 * Max 200 oder 300€ pro Mail pro 24H
+
+# Bugs/Fehler auf der Wunschgutschein Webseite und im Einlösesystem
+
+| Bekannt seit | Beschreibung                                                                                                                                                                                                                                                                                                         |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 10.04.2025   | **Kaputte Verlinkung von Fehlerseiten** – Klick auf „zur Startseite“ auf einer Fehlerseite (z. B. https://app.wunschgutschein.de/abc) verweist auf falschen Link, sodass man nicht zurück zur Startseite gelangt.                                                                                                    |
+| 10.04.2025   | **Weitere kaputte Verlinkungen** – Auf https://geschenkgutscheine.de/products/tankgutschein/ führt der „hier klicken“-Link zu einer ungültigen Adresse (https://b2b.wunschgutschein.de/tankgutschein/). Screenshot des Fehlers im html Code: TODO                                                                    |
+| 10.04.2025   | **Veraltete Werbung für Mobilitätsgutscheine mit D-Ticket** – Auf https://b2b.wunschgutschein.de/pages/mobilitaetsgutschein sowie bei Partnern wie https://kartenwelt.penny.de/wunschgutschein-mobilitat.html wird das D-Ticket noch beworben, obwohl es nicht mehr als Einlösepartner verfügbar ist. Screenshot: TODO |
+| 01.06.2022   | **Replace-Tag/Platzhalter beim Fehler VCRx10** - Beim Fehler VCRx10 wird **{help_email}** verlinkt, ohne Angabe der E-Mail. Screenshot: TODO                                                                                                                                                                         |
+| 01.04.2025   | **Manche Gutscheine werden einfach nicht versendet** Mögliche Lösungen/Troubleshooting siehe FAQ über dieser Tabelle.                                                                                                                                                                                                |
+| 01.07.2025   | **Es gibt ein neues Kontaktformular, welches kaputt ist** - https://app.wunschgutschein.de/help/support-request-code -> Egal welchen Code man hier eingibt, man bekommt immer den Fehlercode 422.                                                                                                                    |
+| 08.08.2025   | *Platzhalter*                                                                                                                                                                                                                                                                                                        |
+| 08.08.2025   | *Platzhalter*                                                                                                                                                                                                                                                                                                        |
