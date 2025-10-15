@@ -1,6 +1,6 @@
 # Wunschgutschein.de, Wunschgutschein.at und Shoppingkonto.de Tools
 
-Wunschgutschein und shoppingkonto.de/.at Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
+wunschgutschein.de/wunschgutschein.at/restaurantgutschein.net Gutscheine und shoppingkonto.de Guthaben teil-automatisiert einlösen und vollständige Liste von Wunschgutschein Einlösepartnern mitsamt verfügbarer Wertstufen automatisch crawlen
 
 # Fertige Shoplisten
 Wer zu faul ist, die Shopliste selbst zu crawlen, findet unter folgendem Link eine Sammlung von Shoplisten, die in unregelmäßigen Abständen aktualisiert wird:  
@@ -10,47 +10,6 @@ Diese Shopliste enthält auch Shops, die nicht bei allen Wunschgutschein-Variant
 Beachtet die Spalte "*Verfügbar in unique WG Variationen*"!!  
 Die klassischen WG Tankgutscheine gibt es nur unter [geschenkgutscheine.de/products/tankgutschein](https://geschenkgutscheine.de/products/tankgutschein).
 
-# 18.12.2023: Wunschgutschein speichert die Daten mittlerweile selbst und füllt das Formular automatisch aus, wenn man mehrere Codes einlöst somit kann man statt der unten beschriebenen Methoden auch einfach mehrere Browserprofile (eines pro E-Mail Adresse) verwenden.
-
-
-# [Veraltet] Wunschgutschein Codes und Shoppingkonto.de Guthaben (teil-)automatisiert einlösen
-### Benötigte Browser Addons
-* [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
-* [Autofill](https://chrome.google.com/webstore/detail/autofill/nlmmgnhgdeffjkdckmikfpnddkbbfkkk)
-1. Die benötigten Addons installieren.
-2. Die Datei ``Redirector.json`` herunterladen, in den Optionen des Redirector Addons importieren (Optionen -> Import) und beliebig anpassen bzw. so einstellen, dass es automatisch zum bevorzugten Einlösepartner weiterleitet.
-3. Die Datei ``Autofill.txt`` herunterladen.
-Dann wie folgt importieren:  
-Optionen -> Import/Export -> In das große Textfeld den kompletten Inhalt der Datei einfügen -> Import --> Wechseln ins Tab "Form Fields" -> Links unten auf "Save" klicken.  
-Optional:  
-Wenn du Profile hast, die nur für bestimmte Einlösepartner angewendet werden sollen, kannst du im jeweiligen Profil unten bei ``site`` die URL zum Shop angeben z.B.  
-``https://app.wunschgutschein.de/shops/10837/amazon``  
-Wenn du nur wenige Profile hast und/oder den Einlösepartner ausschließlich über das Redirector Addon steuern möchtest solltest du dafür sorgen, dass alle Autofill Profile für alle Shops gelten.  
-Schreibe dafür folgenden Wert in das Site Feld:  
-``https://app.wunschgutschein.de/shops/*``  
-(= Standard, wenn du das Beispielprofil aus dieser Repository verwendest.)
-4. Jetzt in Autofill das Beispielprofil beliebig oft duplizieren und mit eigenen Daten befüllen.  
-Mit ALT + G gelangst du zur Übersicht der Profile und kannst bestehende duplizieren/ändern.  
-Wichtig:  
-Falls beim Shop deiner Wahl bestimmte Felder für ein bestimmtes Profil anders sein sollen:  
-Unten bei "Site:" den Link zum Shop angeben für den das Profil gelten soll.  
-
-**Was nun passieren sollte:**  
-Du öffnest die Einlöseseite, gibst deinen Gutscheincode ein und bestätigst das Captcha.  
-Danach wirst du automatisch zur Shopseite weitergeleitet , musst nur noch 1x auf "Weiter" klicken, deine Daten werden automatisch eingetragen und mit einem weiteren Klick wird der Gutschein eingelöst.
-Nach erfolgreicher Einlösung wirst du automatisch zur Einlöseseite weitergeleitet und kannst den nächsten Gutscheincode einlösen.
-
-## WG Einlösen mit den obigen Hilfsmiteln: Bekannte Probleme seit 01-2023
-Durch Änderungen der WG Webseite gibt es derzeit folgende Probleme mit den unten aufgelisteten Addons:  
-Redirector:  
-Der automatische Redirect zum voreingestellten Wunsch-Shop kann dazu führen, dass keine Wertstufe vorausgewählt ist und sich keine auswählen lässt oder eine falsche Wertstufe vorausgewählt ist.  
-Es gibt noch keine Lösung dafür daher empfehle ich derzeit, die automatischen Redirects abzuschalten.
-Autofill:  
-Wenn man Redirector nicht verwendet kann es sein, dass das Autofill Addon ebenfalls nicht (immer) funktioniert.  
-Workaround: Shop-Übersicht nach Eingabe des Gutscheins 1x manuell neuladen und sich zum Ende durchklicken dann sollte Autofill greifen.  
-**WG scheint hier außerdem nachgerüstet zu haben und speichert die eingegebenen Daten selbst in den Cookies oder im Local Storage daher ist ein möglicher Workaround, mehrere Browser-Profile zu verwenden statt die hier aufgeführten Addons zu nutzen.  
-Das bedeutet für die meisten User dürfte es reichen, sich mehrere Browserprofile anzulegen und die GS ohne das 'Autofill' Addon einzulösen.**  
-Ein besserer Ansatz wäre ein Greasemonkey Script.
 
 # ShopCrawler - Vollständige Liste aller Einlösepartner crawlen  
 Mit dem ShopCrawler kannst du eine aktuelle Liste aller WG Einlösepartner, einlösbare Wertstufen usw. erstellen lassen.  
@@ -65,7 +24,7 @@ Möchte man nur den bestehenden Datenbestand **um neue Shops** aktualisieren, ka
 usage: ShopCrawler.py [-h] [-a ALLOW_UPDATE_SHOPS]
 ```
 
-# Anleitung Shopliste für Wunschgutschein.at (Österreich) erstellen
+# Anleitung Shopliste für wunschgutschein.at (Österreich) erstellen
 Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
                                                                                           
 # Liste interner WG Variationen
@@ -96,7 +55,8 @@ Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE,
 |    REWEPENNYBONUS_POR     | 1               | Bonusguthaben aus den neuen WG Aktionen bei REWE/Penny ohne Payback  |                                                                                                                                                                                                                                                                                                                                                               Beispiel:         https://www.mydealz.de/deals/penny-8-auf-wunschgutschein-via-bonus-wunschgutscheincode-nur-gultig-von-mo-1908-bis-so-25082024-wgs-2408319?page=4#comments |
 |        PENNY_PROMO        | 1               | GS, die während neueren Penny Aktionen ~Oktober 2024 verkauft wurden |                                                                                                 
 |         EDEKA_ICP         | 1               |                                Edeka                                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
-|        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
+|           TODO            | 36              |       [Restaurantgutschein](https://restaurantgutschein.net/)        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
+|        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Einlösung kaputt Stand 14.10.2025 |
 |        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
 |        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
 
