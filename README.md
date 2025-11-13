@@ -247,15 +247,11 @@ Wähle deinen Browser:
 
 ## Schritt 2: ShoppingkontoHelper installieren
 
-Klicke auf den folgenden Link:
-[Tampermonkey Script installieren](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js)
-
-Alternativ:
+Link zum Script:  
 ```
 https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js
 ```
 
-**Oder:**
 1. Tampermonkey öffnen (Browser-Icon oben rechts)
 2. Auf "+" klicken (Neues Script)
 3. Den obigen .js Link öffnen und den kompletten Code einfügen.
