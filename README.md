@@ -253,6 +253,9 @@ Link zum Script:
 https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js
 ```
 
+Installation mit einem Klick: [Ausprobieren](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js)
+Falls das nicht funktioniert:  
+
 1. Tampermonkey öffnen (Browser-Icon oben rechts)
 2. Auf "+" klicken (Neues Script)
 3. Den obigen .js Link öffnen und den kompletten Code einfügen.
