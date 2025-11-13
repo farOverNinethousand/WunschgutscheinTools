@@ -232,6 +232,7 @@ Wähle deinen Browser:
 1. Gehe zu [Chrome Web Store - Tampermonkey](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 2. Klicke auf "Zu Chrome hinzufügen"
 3. Bestätige die Installation
+4. Rechtsklick auf das Tampermonkey Symbol -> Erweiterung verwalten -> Oben rechts den Entwicklermodus aktivieren und mittig "Nutzerscripts zulassen" aktivieren.
 
 ### Firefox
 1. Gehe zu [Firefox Add-ons - Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/)
