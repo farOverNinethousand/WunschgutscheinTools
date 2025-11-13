@@ -6,8 +6,8 @@
 // @author       Dev
 // @match        https://www.shoppingkonto.de/transaction/index/*
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js
-// @downloadURL  https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js
+// @updateURL    https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
+// @downloadURL  https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
 // ==/UserScript==
 
 (function() {
