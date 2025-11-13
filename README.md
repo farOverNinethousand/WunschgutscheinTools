@@ -218,3 +218,80 @@ Wenn der GS nicht ankommt: Sperre/Geldwäscheprüfung
 | 08.08.2025   | Wunschgutschein.de irreführende Fehlermeldung, wenn man als dummer User hier versucht, einen Restaurantgutschein einzulösen ([Screenshot](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/Bilder/2025_10_14_restaurantgutschein_net_bug_2.png)). Korrekte Fehlermeldung wäre: "Der angegebene Gutscheincode ist nur unter https://restaurantgutschein.net einlösbar."                                                  |            |
 | 06.11.2025   | Gutscheinversand an Freenet E-Mail Adressen funktioniert nicht mehr. Auch der Neuversand alter GS an Freenet E-Mail Adressen funktioniert nicht. Entweder Freenet blockiert die WG GS-Emails oder WG hat ein Problem. In ersterem Fall sollte WG sich darum kümmern, dass Freenet sie entsperrt, ist also als WG Bug anzusehen.                                                                                                                                   |            |
 | 08.08.2025   | *Platzhalter*                                                                                                                                                                                                                                                                                                                                                                                                                                                     |            |
+
+# Userscript ShoppingkontoHelper
+
+![ShoppingkontoHelper Screenshot](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/Bilder/2025_11_13_Showcase_ShoppingkontoHelper.png)
+
+
+## Schritt 1: Tampermonkey installieren
+
+Wähle deinen Browser:
+
+### Chrome/Edge
+1. Gehe zu [Chrome Web Store - Tampermonkey](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+2. Klicke auf "Zu Chrome hinzufügen"
+3. Bestätige die Installation
+
+### Firefox
+1. Gehe zu [Firefox Add-ons - Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/)
+2. Klicke auf "Zu Firefox hinzufügen"
+3. Bestätige die Installation
+
+### Safari
+1. Gehe zu [App Store - Tampermonkey](https://apps.apple.com/de/app/tampermonkey/id1482490089)
+2. Installiere die App
+3. Aktiviere Tampermonkey in den Safari-Einstellungen
+
+---
+
+## Schritt 2: ShoppingkontoHelper installieren
+
+Klicke auf diesen Link:
+```
+https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.js
+```
+
+**Oder:**
+1. Tampermonkey öffnen (Browser-Icon oben rechts)
+2. Auf "+" klicken (Neues Script)
+3. Den obigen .js Link öffnen und den kompletten Code einfügen.
+4. Mit `Ctrl+S` speichern
+
+---
+
+## Schritt 3: Script aktivieren
+
+1. Gehe im eingeloggten Zustand zu https://www.shoppingkonto.de/transaction/index/
+2. Das grüne Overlay sollte oben rechts erscheinen
+3. Fertig! 🎉
+
+---
+
+## Features
+
+- Kundennummer anzeigen
+- Guthaben und Einlösesummen
+- Anzeige des Einlöselimits
+- CSV-Export aller Transaktionen
+- Warnung bei Limit-Überschreitung
+
+---
+
+## Tipps
+
+- Klick auf **✕** um die Box zu minimieren
+- Klick auf **→** um die Box wiederherzustellen
+- Der CSV-Export enthält alle Transaktionen
+- Die Box aktualisiert sich beim Neuladen der Seite
+
+# ShoppingkontoHelper FAQ
+
+**Kann mein Shoppingkonto durch die Verwendung von ShoppingkontoHelper gesperrt werden?**  
+Nein.
+
+**Können die Betreiber von Shoppingkonto.de sehen, dass ich ShoppingkontoHelper verwende?**  
+Nein.
+
+Ich bin in einer Prüfung gelandet, obwohl ich keine Einlöselimits überschritten habe, wie kann das sein?  
+Den Algo, der die Sperren auslöst kennen nur die Betreiber von Shoppingkonto.de
