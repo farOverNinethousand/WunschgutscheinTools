@@ -1,13 +1,28 @@
 // ==UserScript==
-// @name         Shoppingkonto Overlay & CSV Export
-// @namespace    https://www.shoppingkonto.de/
-// @version      1.2
-// @description  Zeige Kundennummer, Einlösevolumen und exportiere Gutscheincodes als CSV
-// @author       Dev
-// @match        https://www.shoppingkonto.de/transaction/index/*
-// @grant        none
-// @updateURL    https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
-// @downloadURL  https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
+// @name               ShoppingkontoHelper
+// @name:en            ShoppingkontoHelper
+// @name:de            ShoppingkontoHelper
+// @description        Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
+// @description:en     Display customer number, balance, redemption amounts and export all transactions as CSV
+// @description:de     Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
+// @version            1.2
+// @author             farOverNinethousand
+// @namespace          https://www.shoppingkonto.de/
+// @homepageURL        https://github.com/farOverNinethousand/WunschgutscheinTools
+// @homepage           https://github.com/farOverNinethousand/WunschgutscheinTools
+// @icon               https://www.shoppingkonto.de/favicon.ico
+// @match              https://www.shoppingkonto.de/transaction/index/*
+// @run-at             document-end
+// @inject-into        content
+// @grant              none
+// @license            GPL v3
+// @compatible         firefox
+// @compatible         chrome
+// @compatible         safari
+// @compatible         opera
+// @compatible         edge
+// @downloadURL        https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
+// @updateURL          https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/tampermonkey_userscript_shoppingkonto.user.js
 // ==/UserScript==
 
 (function() {
