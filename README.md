@@ -220,6 +220,7 @@ Wenn der GS nicht ankommt: Sperre/Geldwäscheprüfung
 | 08.08.2025   | *Platzhalter*                                                                                                                                                                                                                                                                                                                                                                                                                                                     |            |
 
 # Userscript ShoppingkontoHelper
+Auf Greasefork: https://greasyfork.org/de/scripts/556124-shoppingkontohelper
 
 ![ShoppingkontoHelper Screenshot](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/Bilder/2025_11_13_Showcase_ShoppingkontoHelper.png)
 
