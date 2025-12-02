@@ -5,7 +5,7 @@
 // @description        Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
 // @description:en     Display customer number, balance, redemption amounts and export all transactions as CSV
 // @description:de     Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
-// @version            1.2
+// @version            1.3
 // @author             farOverNinethousand
 // @namespace          https://www.shoppingkonto.de/
 // @homepageURL        https://github.com/farOverNinethousand/WunschgutscheinTools
@@ -79,8 +79,9 @@
     // Extrahiere Einlösesumme (nur "Wunschgutschein")
     function extractRedemptionSum() {
         // Checke erst, ob der Text "Sie können mit dem Einlösen beginnen, sobald Ihr Shoppingkonto Guthaben hat" vorhanden ist
+        // Nicht zu verwechseln mit Text, der in alten Accounts stehen kann: Sie können mit dem Einlösen beginnen, sobald Sie Ihre Mobilfunknummer in einem korrekten Format hinterlegt haben.<br>
         const panelBody = document.querySelector('.panel-body');
-        if (panelBody && panelBody.textContent.includes('Sie können mit dem Einlösen beginnen')) {
+        if (panelBody && panelBody.textContent.includes('Sie können mit dem Einlösen beginnen, sobald Ihr Shoppingkonto Guthaben hat')) {
             return '0.00';
         }
 

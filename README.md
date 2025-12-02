@@ -109,6 +109,8 @@ EURONICS
 DM
 ONLINE_B2B_DE_PDF
 RESERVE
+NETTO_DE
+EPAY_DE_POR
 ```
 
 ## WG Variationen Österreich
