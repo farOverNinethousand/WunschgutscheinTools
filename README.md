@@ -204,8 +204,19 @@ Wenn der GS nicht ankommt: Sperre/Geldwäscheprüfung
 * Accountsperrung bei zu vielen Einlöse-Fehlversuchen??
 * Sofortige Accountsperre, wenn man versucht, GS mit Fehler "RDXm3" (ganz am Ende) einzulösen (was man ggf. nicht vorher wissen kann daher im Zweifel die E-Mail Einlösung verwenden)
 
-# WGs Limits E-Mail Einlösung
+# WGs Limits normale Einlösung
 * Max 200 oder 300€ pro Mail pro 24H
+
+# Kleines Shoppingkonto.de FAQ
+**Was bedeutet der Fehler "Verbindungsfehler zu Wunschgutschein. Bitte versuchen Sie es später nocheinmal." beim Versuch, einen Gutschein auf das Shoppingkonto einzulösen?**  
+Der Fehler kann verschiedene Ursachen haben.  
+Versuche, den GS ohne Shoppingkonto einzulösen.  
+Nach Eingabe des Codes und Lösen des Captchas sollte eine aussagekräftigere Fehlermeldung bzw ein Fehlercode angezeigt werden.
+
+**Ich habe Guthaben auf meinem Shoppingkonto, aber kann es nicht einlösen, warum?**  
+Mögliche Ursachen:  
+* Keine Handynummer hinterlegt: Seit 2024(?) muss eine **verifizierte** Handynummer hinterlegt sein. Bestandskonten ohne hinterlegte Handynummer können zwar benutzt werden, um Gutscheine aufzuladen, aber Einlösen geht erst, wenn man eine gültige(!!) Nummer hinterlegt.
+
 
 # Bugs/Fehler auf der Wunschgutschein Webseite und im Einlösesystem
 
