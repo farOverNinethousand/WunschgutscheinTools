@@ -113,6 +113,7 @@ B2B_WGS_SACHBEZUG
 RESERVE
 NETTO_DE
 EPAY_DE_POR
+KUNDK
 ```
 
 ## WG Variationen Österreich
