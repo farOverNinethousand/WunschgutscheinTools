@@ -116,6 +116,7 @@ NETTO_DE
 EPAY_DE_POR
 KUNDK
 ELOADING
+Penny
 ```
 
 ## WG Variationen Österreich
