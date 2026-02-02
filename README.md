@@ -32,7 +32,7 @@ Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angeze
 09.02.2024: Ich habe die Variation "normal" entfernt, da das Wording so nicht stimmt. Es gibt die nennen wir sie mal "mainstream" WG Typen, die allesamt dieselben Shops bieten.  
 Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE, ALDI_SUED und einige mehr.
 
-## WG Variationen Deutschland
+## WG Distributionen Deutschland (wird nicht mehr aktualisiert)
 
 |       Distribution        | voucherCategory |                     Typisch verwendet für WG Typ                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Details/Besonderheiten |
 |:-------------------------:|-----------------|:--------------------------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -59,10 +59,9 @@ Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE,
 |           TODO            | 36              |       [Restaurantgutschein](https://restaurantgutschein.net/)        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
 |        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Einlösung kaputt Stand 14.10.2025 |
 |        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
-|        Platzhalter        | 1               |                             Platzhalter                              |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Platzhalter |
 
 
-## Weitere WG Distribution Werte als lazy Tabelle
+## Weitere WG Distribution Werte als lazy Liste
 ```
 ONLINE_DE_PDF
 REWE
@@ -75,6 +74,7 @@ Rossmann
 LIDL_OHNE_AMAZON
 ONLINE_GG_TANKSTELLEN_PDF
 Kaufland
+KAUFLAND_OHNE_AMAZON
 WGSCADOOZ_POR
 LIDL
 REWE_POR
