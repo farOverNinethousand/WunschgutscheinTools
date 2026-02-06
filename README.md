@@ -26,11 +26,6 @@ usage: ShopCrawler.py [-h] [-a ALLOW_UPDATE_SHOPS]
 
 # Anleitung Shopliste für wunschgutschein.at (Österreich) erstellen
 Hierfür den Parameter ```wgAT``` in der ```ShopCrawler.py``` auf ```True``` setzen.
-                                                                                          
-# Liste interner WG Variationen
-Diese Variationen definieren mitunter, welche Shops bei welchem Gutschein angezeigt werden.  
-09.02.2024: Ich habe die Variation "normal" entfernt, da das Wording so nicht stimmt. Es gibt die nennen wir sie mal "mainstream" WG Typen, die allesamt dieselben Shops bieten.  
-Dies sind bei WG Deutschland z.B. alle WG Typen der Variationen ONLINE_DE, REWE, ALDI_SUED und einige mehr.
 
 ## WG Distributionen Deutschland (wird nicht mehr aktualisiert)
 
@@ -119,12 +114,25 @@ ELOADING
 Penny
 ```
 
-## WG Variationen Österreich
+## WG Kategorien (category-ids) Österreich
 
-| Distribution | voucherCategory |             Typisch verwendet für WG Typ             |                                                          Details/Besonderheiten |
-|:------------:|-----------------|:----------------------------------------------------:|--------------------------------------------------------------------------------:|
-|    Normal    | 2               |                     Platzhalter                      |                                                                     Platzhalter |
-| Platzhalter  | 1               |                     Platzhalter                      |                                                                     Platzhalter |
+| Distribution | id |              Kommentar               | Details/Besonderheiten |
+|:------------:|----|:------------------------------------:|-----------------------:|
+|    Normal    | 2  | Für DE ist die default-id 1, hier 2. |     wunschgutschein.at |
+| Platzhalter  | 1  |             Platzhalter              |            Platzhalter |
+
+## WG Kategorien (category-ids) Österreich
+
+|    Distribution     | id |                                         Kommentar                                          |        Details/Besonderheiten |
+|:-------------------:|----|:------------------------------------------------------------------------------------------:|------------------------------:|
+|       Normal        | 1  |                                        Platzhalter                                         |            wunschgutschein.de |
+|      Shopping       | 22 |                                        Platzhalter                                         |   wunschgutschein.de/shopping |
+|       Tanken        | 29 |                                        Platzhalter                                         |     wunschgutschein.de/tanken |
+|      Mobilität      | 30 |                                        Platzhalter                                         | wunschgutschein.de/mobilitaet |
+| Restaurantgutschein | 36 |                                        Platzhalter                                         |       restaurantgutschein.net |
+|      EveryWish      | 37 | Außerhalb von DE nennt sich WG 'EveryWish'. Nun gibts diese Marke auch in DE (ab Jan 2026) |                  everywish.de |
+|     Platzhalter     | 1  |                                        Platzhalter                                         |           wunschgutschein.de/ |
+|     Platzhalter     | 1  |                                        Platzhalter                                         |           wunschgutschein.de/ |
 
 
 # TODOs
