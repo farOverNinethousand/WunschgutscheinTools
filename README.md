@@ -114,14 +114,7 @@ ELOADING
 Penny
 ```
 
-## WG Kategorien (category-ids) Österreich
-
-| Distribution | id |              Kommentar               | Details/Besonderheiten |
-|:------------:|----|:------------------------------------:|-----------------------:|
-|    Normal    | 2  | Für DE ist die default-id 1, hier 2. |     wunschgutschein.at |
-| Platzhalter  | 1  |             Platzhalter              |            Platzhalter |
-
-## WG Kategorien (category-ids) Österreich
+## WG Kategorien (category-ids) Deutschland
 
 |    Distribution     | id |                                         Kommentar                                          |        Details/Besonderheiten |
 |:-------------------:|----|:------------------------------------------------------------------------------------------:|------------------------------:|
@@ -133,6 +126,13 @@ Penny
 |      EveryWish      | 37 | Außerhalb von DE nennt sich WG 'EveryWish'. Nun gibts diese Marke auch in DE (ab Jan 2026) |                  everywish.de |
 |     Platzhalter     | 1  |                                        Platzhalter                                         |           wunschgutschein.de/ |
 |     Platzhalter     | 1  |                                        Platzhalter                                         |           wunschgutschein.de/ |
+
+## WG Kategorien (category-ids) Österreich
+
+| Distribution | id |              Kommentar               | Details/Besonderheiten |
+|:------------:|----|:------------------------------------:|-----------------------:|
+|    Normal    | 2  | Für DE ist die default-id 1, hier 2. |     wunschgutschein.at |
+| Platzhalter  | 1  |             Platzhalter              |            Platzhalter |
 
 
 # TODOs
