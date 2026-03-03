@@ -5,7 +5,7 @@
 // @description        Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
 // @description:en     Display customer number, balance, redemption amounts and export all transactions as CSV
 // @description:de     Zeige Kundennummer, Guthaben, Einlösesummen und exportiere alle Transaktionen als CSV
-// @version            1.3
+// @version            1.4
 // @author             farOverNinethousand
 // @namespace          https://www.shoppingkonto.de/
 // @homepageURL        https://github.com/farOverNinethousand/WunschgutscheinTools
@@ -53,8 +53,6 @@
 
     // Extrahiere aktuelles Guthaben
     function extractBalance() {
-        // Suche nach dem Guthaben-Text im HTML
-        // "auf Ihrem Shoppingkonto befindet sich Gutschein-Guthaben im Wert von  <br/><span style="font-size: 40px; font-weight: bold;">50,00 EUR!</span>"
         const jumbotron = document.querySelector('.jumbotron');
         if (jumbotron) {
             const text = jumbotron.textContent;
@@ -78,8 +76,6 @@
 
     // Extrahiere Einlösesumme (nur "Wunschgutschein")
     function extractRedemptionSum() {
-        // Checke erst, ob der Text "Sie können mit dem Einlösen beginnen, sobald Ihr Shoppingkonto Guthaben hat" vorhanden ist
-        // Nicht zu verwechseln mit Text, der in alten Accounts stehen kann: Sie können mit dem Einlösen beginnen, sobald Sie Ihre Mobilfunknummer in einem korrekten Format hinterlegt haben.<br>
         const panelBody = document.querySelector('.panel-body');
         if (panelBody && panelBody.textContent.includes('Sie können mit dem Einlösen beginnen, sobald Ihr Shoppingkonto Guthaben hat')) {
             return '0.00';
@@ -90,7 +86,6 @@
         let found = false;
 
         transactions.forEach(t => {
-            // Nur "Wunschgutschein" zählen, NICHT "Gutschein Einlösung"
             if (t.action.includes('Wunschgutschein') && !t.action.includes('Einlösung')) {
                 total += t.amount;
                 found = true;
@@ -112,15 +107,12 @@
                 const actionCell = cells[1].textContent.trim();
                 const amountCell = cells[2].textContent.trim();
 
-                // Überspringe Summenzeile und leere Zeilen
                 if (actionCell === '&nbsp;' || actionCell === '' || dateCell === 'Summe' || dateCell === '') {
                     continue;
                 }
 
-                // Parse Datum zu Date-Objekt (z.B. "2025-11-11 13:07:52")
                 const transactionDate = new Date(dateCell);
 
-                // Extrahiere nur die Zahl aus dem Betrag (z.B. "25,00 EUR" -> 25.00)
                 const amountMatch = amountCell.match(/([-]?[\d.,]+)\s*EUR/);
                 const amountRaw = amountMatch ? amountMatch[1] : '0';
                 const amount = parseFloat(amountRaw.replace(',', '.'));
@@ -150,7 +142,6 @@
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
 
-        // Generiere Dateiname: YYYY_MM_dd_KDNR_shoppingkonto_transaktionen.csv
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -170,26 +161,27 @@
     // ========== HAUPT-LOGIK ==========
 
     function createOverlay() {
-        // Extrahiere Daten
         const customerNumber = extractCustomerNumber();
         const balance = extractBalance();
         const redemptionSum = extractRedemptionSum();
         const redemptionSum24h = get24hRedemptionSum();
         const transactions = extractAllTransactions();
 
-        // Zähle nur Wunschgutschein Transaktionen
         const voucherCount = transactions.filter(t => t.action.includes('Wunschgutschein')).length;
-        // Zähle nur Gutschein Einlösungen
         const redemptionCount = transactions.filter(t => t.action.includes('Gutschein Einlösung')).length;
 
-        // Bestimme Hintergrundfarbe basierend auf 24h Einlösesumme
         const sum24hNum = parseFloat(redemptionSum24h);
         const isHighVolume = sum24hNum >= 300;
-        const backgroundColor = isHighVolume ? 'rgba(255, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.85)';
-        const borderColor = isHighVolume ? '#ff0000' : 'lime';
-        const textColor = isHighVolume ? '#ff0000' : 'lime';
 
-        // Erstelle Overlay
+        // Im High-Volume-Modus: dunkler roter Hintergrund, weißer Text, rote Akzente
+        const backgroundColor = isHighVolume ? 'rgba(140, 0, 0, 0.95)' : 'rgba(0, 0, 0, 0.85)';
+        const borderColor = isHighVolume ? '#ff4444' : 'lime';
+        const textColor = isHighVolume ? '#ffffff' : 'lime';
+        const accentColor = isHighVolume ? '#ff6666' : 'lime';
+        const btnBg = isHighVolume ? '#cc0000' : 'lime';
+        const btnColor = isHighVolume ? '#ffffff' : 'black';
+        const btnHoverBg = isHighVolume ? '#ff2222' : '#00ff00';
+
         const overlay = document.createElement('div');
         overlay.id = 'shoppingkonto-overlay';
         overlay.style.cssText = `
@@ -215,7 +207,7 @@
                 <button id="toggle-overlay-btn" style="
                     background: transparent;
                     border: none;
-                    color: inherit;
+                    color: ${textColor};
                     font-size: 18px;
                     cursor: pointer;
                     padding: 0;
@@ -223,36 +215,36 @@
                 ">✕</button>
             </div>
             <div id="overlay-content" style="display: block;">
-                <div style="margin-bottom: 15px; text-align: center; border-bottom: 1px solid; padding-bottom: 10px;">
-                    <strong style="font-size: 12px;">ShoppingkontoHelper V 1.2</strong>
+                <div style="margin-bottom: 15px; text-align: center; border-bottom: 1px solid ${accentColor}; padding-bottom: 10px;">
+                    <strong style="font-size: 12px; color: ${accentColor};">ShoppingkontoHelper V 1.4</strong>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Kundennummer:</strong> ${customerNumber}
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Kundennummer:</strong> ${customerNumber}
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Guthaben:</strong> ${balance}${balance !== 'unbekannt' ? ' €' : ''}
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Guthaben:</strong> ${balance}${balance !== 'unbekannt' ? ' €' : ''}
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Einlösesumme:</strong> ${redemptionSum}${redemptionSum !== 'unbekannt' ? ' €' : ''}
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Einlösesumme:</strong> ${redemptionSum}${redemptionSum !== 'unbekannt' ? ' €' : ''}
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Einlösesumme 24h:</strong> ${redemptionSum24h}€/300.00€
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Einlösesumme 24h:</strong> ${redemptionSum24h}€/300.00€
                 </div>
-                <div style="margin-bottom: 15px; font-size: 11px; opacity: 0.8;">
-                    Limit laut <a href="https://www.shoppingkonto.de/agb.html#:~:text=EUR%20300" target="_blank" style="color: inherit; text-decoration: underline;">AGB</a>
+                <div style="margin-bottom: 15px; font-size: 11px; opacity: 0.8; color: ${textColor};">
+                    Limit laut <a href="https://www.shoppingkonto.de/agb.html#:~:text=EUR%20300" target="_blank" style="color: ${accentColor}; text-decoration: underline;">AGB</a>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Transaktionen:</strong> ${transactions.length}
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Transaktionen:</strong> ${transactions.length}
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <strong>Davon Gutscheincodes:</strong> ${voucherCount}
+                <div style="margin-bottom: 10px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Davon Gutscheincodes:</strong> ${voucherCount}
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Davon Einlösungen:</strong> ${redemptionCount}
+                <div style="margin-bottom: 15px; color: ${textColor};">
+                    <strong style="color: ${accentColor};">Davon Einlösungen:</strong> ${redemptionCount}
                 </div>
                 <button id="csv-export-btn" style="
-                    background: ${isHighVolume ? '#ff0000' : 'lime'};
-                    color: ${isHighVolume ? 'white' : 'black'};
+                    background: ${btnBg};
+                    color: ${btnColor};
                     border: none;
                     padding: 8px 12px;
                     border-radius: 4px;
@@ -269,7 +261,6 @@
 
         document.body.appendChild(overlay);
 
-        // Toggle Button Funktionalität
         let isVisible = true;
         const toggleBtn = document.getElementById('toggle-overlay-btn');
         const overlayContent = document.getElementById('overlay-content');
@@ -278,14 +269,12 @@
             isVisible = !isVisible;
 
             if (isVisible) {
-                // Box maximieren
                 overlayContent.style.display = 'block';
-                overlay.style.background = isHighVolume ? 'rgba(255, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.85)';
+                overlay.style.background = backgroundColor;
                 overlay.style.border = `2px solid ${borderColor}`;
                 overlay.style.padding = '15px';
                 toggleBtn.textContent = '✕';
             } else {
-                // Box minimieren
                 overlayContent.style.display = 'none';
                 overlay.style.background = 'transparent';
                 overlay.style.border = 'none';
@@ -294,12 +283,10 @@
             }
         });
 
-        // CSV Export Button Listener
         document.getElementById('csv-export-btn').addEventListener('click', function() {
             if (transactions.length > 0) {
                 exportToCSV(transactions, customerNumber);
                 this.textContent = '✓ Export erfolgreich!';
-                this.style.background = isHighVolume ? '#ff0000' : 'lime';
                 setTimeout(() => {
                     this.textContent = `CSV Export (${transactions.length} Einträge)`;
                 }, 2000);
@@ -308,19 +295,17 @@
             }
         });
 
-        // Hover-Effekt für Button
         document.getElementById('csv-export-btn').addEventListener('mouseover', function() {
-            this.style.background = isHighVolume ? '#ff3333' : '#00ff00';
+            this.style.background = btnHoverBg;
             this.style.boxShadow = isHighVolume ? '0 0 5px red' : '0 0 5px lime';
         });
 
         document.getElementById('csv-export-btn').addEventListener('mouseout', function() {
-            this.style.background = isHighVolume ? '#ff0000' : 'lime';
+            this.style.background = btnBg;
             this.style.boxShadow = 'none';
         });
     }
 
-    // Starte Script nach Seitenladung
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', createOverlay);
     } else {
