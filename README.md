@@ -115,6 +115,7 @@ KUNDK
 ELOADING
 ELOADING_POR
 Penny
+ICP
 ```
 
 ## WG Kategorien (category-ids) Deutschland
