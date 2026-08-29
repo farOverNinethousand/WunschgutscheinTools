@@ -226,6 +226,7 @@ Wenn der GS nicht ankommt: Sperre/Geldwäscheprüfung
 
 # WGs Limits normale Einlösung
 * Max 200 oder 300€ pro Mail pro 24H
+* Max 5 GS pro Tag pro E-Mail; das steht Stand Juli 2026 in dem Payback WG FAQ ([Screenshot](https://raw.githubusercontent.com/farOverNinethousand/WunschgutscheinTools/refs/heads/main/Bilder/2026_07_27_Screenshot_Payback_FAQ_WG_Limit_max_5.jpg))
 
 # Kleines Shoppingkonto.de FAQ
 **Was bedeutet der Fehler "Verbindungsfehler zu Wunschgutschein. Bitte versuchen Sie es später nocheinmal." beim Versuch, einen Gutschein auf das Shoppingkonto einzulösen?**  
